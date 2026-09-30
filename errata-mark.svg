@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+<rect width="256" height="256" fill="#f4efe4"/>
+<g font-family="Georgia,serif" fill="#222">
+<text x="36" y="104" font-size="44">5 995</text>
+<line x1="30" y1="90" x2="160" y2="90" stroke="#b3261e" stroke-width="5"/>
+<text x="112" y="170" font-size="44" fill="#b3261e">5 967</text>
+<text x="36" y="226" font-size="22" font-style="italic">errata</text>
+</g>
+<path d="M100 118 q20 20 20 30" stroke="#b3261e" stroke-width="3" fill="none"/>
+</svg>
