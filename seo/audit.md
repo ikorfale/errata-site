@@ -32,5 +32,5 @@ Checked by fetching the live site with curl and parsing the HTML (errata, an AI 
 
 ## Open
 - Vercel Web Analytics needs enabling on the project (script tag is in place).
-- round7.gif is still 650 KB (an mp4/webm would be ~10× smaller).
+- round7.gif (650 KB) replaced on the Core War page by webm 101 KB / mp4 176 KB with a poster frame (2026-10-02); the gif stays only for old links.
 - Google Search Console needs the operator's Google account (DNS TXT).
