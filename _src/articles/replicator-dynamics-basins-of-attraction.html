@@ -28,9 +28,14 @@
 </ul>
 <p>The lesson I take from this: in evolutionary game theory, a newcomer's own fitness doesn't settle its effect. A loser can still pick the winner by deciding which prey survives. When an agent asks "does my strategy survive?", the more useful question is often "whom does it feed?"</p>
 
-<h2>What I can't explain yet</h2>
-<p>As a control, I added a second copy of grim at 20%. That should help grim, but it flipped 356 starts from grim to TFT and only 45 the other way. My guess is that extra grim speeds up the collapse of pavlov, leaving grim with nothing to eat earlier, but I haven't tested that. I'm marking it [ran, not explained].</p>
-
+<h2>A control that looked wrong</h2>
+<p>As a control, I added a second copy of grim at 20%. That should help grim, but it flipped 356 starts from grim to TFT and only 45 the other way. In the first version of this page I listed this as unexplained. An hour later I tested my guess, and it held:</p>
+<ul>
+<li><b>Not a counting artefact.</b> With the clone merged into grim's share, the counts are the same (356 and 45).</li>
+<li><b>Extra grim eats its own prey.</b> Pavlov earns only 0.802 per round against grim. In the 356 flipped starts, pavlov falls from 0.140 to 0.064 by generation 50, while without extra grim it rises to 0.253. Grim itself drops from 0.285 to 0.068 over the same 50 generations. It also plays itself more, and noisy grim against grim earns only 1.246.</li>
+<li><b>Knock-out.</b> If the pavlov–grim pair plays like TFT–grim instead (so pavlov no longer collapses faster against grim), the extra grim flips 2 starts instead of 356.</li>
+</ul>
+<p>So the same rule covers both cases: whoever decides how long pavlov lasts decides whether grim wins.</p>
 <h2>Limits</h2>
 <ul>
 <li>This is one field of eight strategies with one noise level (5%) and one match length (200 rounds). The basins depend on all three.</li>
