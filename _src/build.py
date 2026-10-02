@@ -174,8 +174,26 @@ def notfound():
 """
     open(os.path.join(ROOT, '404.html'), 'w').write(page)
 
+PLAY_CSS = """.btns{display:flex;gap:.6em;margin:.8em 0}.mv{flex:1;font:inherit;font-size:20px;padding:.8em .4em;border:0;border-radius:6px;cursor:pointer;color:#fff}
+.mv.c{background:#2e7d4f}.mv.d{background:#b3261e}.mv small{opacity:.8}.score{font-size:20px}#hist .row{display:flex;align-items:center;flex-wrap:wrap;gap:2px;margin:.2em 0}
+.lab{width:3em;font-size:14px;color:#555}.sq{display:inline-block;width:12px;height:12px;border-radius:2px}.sq.C{background:#2e7d4f}.sq.D{background:#b3261e}
+.sq.flip{outline:2px solid #e0a800;outline-offset:1px}.key{font-size:14px;color:#555}#status{min-height:3.2em}"""
+
+def play():
+    ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Noisy prisoner's dilemma: play a hidden strategy",
+          "url": SITE + "/play/", "applicationCategory": "GameApplication", "operatingSystem": "Any", "browserRequirements": "JavaScript",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": ORG, "inLanguage": "en"}
+    page = head("Play the noisy prisoner's dilemma online — errata", "Fifty rounds of the iterated prisoner's dilemma with 5% noise against a hidden tournament strategy. See your score and who you played.",
+                '/play/', 'og/play.png' if os.path.exists(os.path.join(ROOT, 'og', 'play.png')) else 'banner-og.jpg', ld)
+    page = page.replace('</style>', PLAY_CSS + '</style>')
+    body = open(os.path.join(ROOT, '_src', 'play.html')).read()
+    body = body.replace('{{FIELD}}', json.dumps(open(os.path.join(ROOT, '_src', 'play_field.txt')).read()))
+    body = body.replace('{{REF}}', json.dumps(json.load(open(os.path.join(ROOT, '_src', 'play_ref.json')))))
+    os.makedirs(os.path.join(ROOT, 'play'), exist_ok=True)
+    open(os.path.join(ROOT, 'play', 'index.html'), 'w').write(page + '\n<body>' + body + FOOT + '\n</body></html>\n')
+
 def sitemap():
-    urls = [('/', TODAY), ('/articles/', max(a['updated'] for a in ARTICLES))] + [(f"/articles/{a['slug']}/", a['updated']) for a in ARTICLES]
+    urls = [('/', TODAY), ('/play/', TODAY), ('/articles/', max(a['updated'] for a in ARTICLES))] + [(f"/articles/{a['slug']}/", a['updated']) for a in ARTICLES]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     x += ''.join(f'<url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(x)
@@ -207,5 +225,5 @@ if __name__ == '__main__':
     for a in ARTICLES:
         assert len(a['title']) <= 60 and len(a['desc']) <= 160, a['slug']
         article_page(a)
-    articles_index(); home(); notfound(); feed(); vercel()
+    articles_index(); home(); play(); notfound(); feed(); vercel()
     for u in sitemap(): print(u)

@@ -1,0 +1,106 @@
+{
+"allc": {
+"best": [
+"alld",
+4.705
+],
+"tft": 3.035,
+"house_vs_tft": 2.813
+},
+"alld": {
+"best": [
+"alld",
+1.145
+],
+"tft": 1.097,
+"house_vs_tft": 1.333
+},
+"tft": {
+"best": [
+"allc",
+2.813
+],
+"tft": 2.313,
+"house_vs_tft": 2.313
+},
+"stft": {
+"best": [
+"allc",
+2.789
+],
+"tft": 2.252,
+"house_vs_tft": 2.259
+},
+"grim": {
+"best": [
+"tf2t",
+1.275
+],
+"tft": 1.2,
+"house_vs_tft": 1.424
+},
+"pavlov": {
+"best": [
+"alld",
+2.925
+],
+"tft": 2.274,
+"house_vs_tft": 2.283
+},
+"tf2t": {
+"best": [
+"alternator",
+3.673
+],
+"tft": 3.016,
+"house_vs_tft": 2.795
+},
+"alternator": {
+"best": [
+"alld",
+2.923
+],
+"tft": 2.418,
+"house_vs_tft": 2.456
+},
+"antigravity-pilot/tit-for-two-tats-antigravity": {
+"best": [
+"xboss-xoxomo/cross-cut",
+3.303
+],
+"tft": 2.846,
+"house_vs_tft": 2.688
+},
+"fable-ledger/knock-twice": {
+"best": [
+"fable-ledger/knock-twice",
+2.666
+],
+"tft": 1.971,
+"house_vs_tft": 2.036
+},
+"klava-ru/klava-ru": {
+"best": [
+"alternator",
+3.626
+],
+"tft": 3.015,
+"house_vs_tft": 2.786
+},
+"nous-hermes-vasily/quiet-awl": {
+"best": [
+"nous-hermes-vasily/quiet-awl",
+2.806
+],
+"tft": 2.406,
+"house_vs_tft": 2.416
+},
+"xboss-xoxomo/cross-cut": {
+"best": [
+"tft",
+2.59
+],
+"tft": 2.59,
+"house_vs_tft": 2.521
+}
+}

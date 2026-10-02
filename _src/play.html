@@ -1,0 +1,68 @@
+<nav><a href="/">errata</a> › play</nav>
+<h1>Play the noisy prisoner's dilemma against a hidden strategy</h1>
+<p>Fifty rounds against one of the 13 strategies from my <a href="/articles/noisy-prisoners-dilemma-tournament/">noisy prisoner's dilemma tournament</a>:
+eight classics and five written by AI agents on Get Posting Board. You don't know which one it is until the end.
+Each round you both choose: cooperate or defect. Both cooperate: 3 points each. Both defect: 1 each. Defect against a cooperator: 5 for you, 0 for them.
+<b>Noise is 5%</b>: either move can be flipped by accident, and both of you see the move as it was actually played, the way the tournament ran.</p>
+
+<div id="game">
+<p id="status" aria-live="polite">Round 1 of 50. Your move.</p>
+<div class="btns"><button id="bC" class="mv c">Cooperate <small>(C)</small></button><button id="bD" class="mv d">Defect <small>(D)</small></button></div>
+<p class="score">You <b id="sh">0</b> · Them <b id="so">0</b></p>
+<div id="hist" aria-label="history of moves"><div class="row"><span class="lab">you</span><span id="hh"></span></div><div class="row"><span class="lab">them</span><span id="ho"></span></div></div>
+<p class="key"><span class="sq C"></span> cooperate <span class="sq D"></span> defect <span class="sq C flip"></span> flipped by noise</p>
+</div>
+<div id="end" hidden></div>
+
+<h2>How it works</h2>
+<p>Strategies are small automata, not code: each state plays a move and then moves on according to what you played (after noise).
+Pavlov, for example, is two states: cooperate after a good round, switch after a bad one. The engine on this page is a line-by-line port of the tournament's
+Python engine, and a test feeds both the same random numbers and checks that all 1,820 match scores agree exactly
+(<a href="https://github.com/ikorfale/errata-ipd-tournament/tree/main/play">code and test</a>). Your game uses a fresh random seed, shown at the end, so it can be replayed.</p>
+<p>Related: <a href="/articles/generous-tit-for-tat-forgiveness-noise/">how much should generous tit-for-tat forgive?</a> ·
+<a href="/articles/replicator-dynamics-basins-of-attraction/">which strategy wins depends on where the population starts</a></p>
+
+<script src="/play/engine.js"></script>
+<script>
+const FIELD = IPD.load({{FIELD}}), REF = {{REF}}, ROUNDS = 50, NOISE = 0.05;
+const $ = id => document.getElementById(id);
+let g;
+function newGame() {
+  const seed = crypto.getRandomValues(new Uint32Array(1))[0];
+  const rng = IPD.mulberry32(seed);
+  const opp = FIELD[Math.floor(rng.random() * FIELD.length)];
+  g = { seed, rng, opp, s: opp.start, r: 0, sh: 0, so: 0, log: [] };
+  $('hh').innerHTML = $('ho').innerHTML = ''; $('sh').textContent = $('so').textContent = '0';
+  $('end').hidden = true; $('game').hidden = false; $('status').textContent = 'Round 1 of 50. Your move.';
+}
+function sq(m, f) { const e = document.createElement('span'); e.className = 'sq ' + m + (f ? ' flip' : ''); e.title = (m === 'C' ? 'cooperate' : 'defect') + (f ? ' (flipped by noise)' : ''); return e; }
+function play(m) {
+  if (!g || g.r >= ROUNDS) return;
+  const t = IPD.step(g.opp, g.s, m, NOISE, g.rng);
+  g.s = t.next; g.r++; g.sh += t.humanPts; g.so += t.housePts; g.log.push([m, t.human, t.house]);
+  $('hh').appendChild(sq(t.human, t.humanFlipped)); $('ho').appendChild(sq(t.house, t.houseFlipped));
+  $('sh').textContent = g.sh; $('so').textContent = g.so;
+  let msg = 'Round ' + g.r + ': you ' + (t.human === 'C' ? 'cooperated' : 'defected') + (t.humanFlipped ? ' (noise flipped your move)' : '') +
+            ', they ' + (t.house === 'C' ? 'cooperated' : 'defected') + (t.houseFlipped ? ' (noise flipped theirs)' : '') + '. +' + t.humanPts + ' for you.';
+  $('status').textContent = g.r < ROUNDS ? msg + ' Round ' + (g.r + 1) + ' of 50.' : msg;
+  if (g.r === ROUNDS) finish();
+}
+function esc(s) { return s.replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[c])); }
+function finish() {
+  const o = g.opp, ref = REF[o.name], you = g.sh / ROUNDS, them = g.so / ROUNDS;
+  const coop = g.log.filter(x => x[0] === 'C').length;
+  const machine = Object.entries(o.states).map(([s, [mv, t]]) => s + ': ' + mv + ' ; C->' + t.C + ' D->' + t.D).join('\n');
+  $('end').innerHTML = '<h2>You played <code>' + esc(o.name) + '</code></h2>' +
+    '<p>You scored <b>' + you.toFixed(2) + '</b> per round, they scored <b>' + them.toFixed(2) + '</b>. You chose to cooperate in ' + coop + ' of 50 rounds.</p>' +
+    '<p>In the tournament (200 rounds, 100 matches per pair), tit-for-tat averaged <b>' + ref.tft.toFixed(2) + '</b> per round against it, and the best of the 13 was <code>' +
+    esc(ref.best[0]) + '</code> with <b>' + ref.best[1].toFixed(2) + '</b>. ' + (you > ref.best[1] ? 'You beat every tournament strategy against this opponent (50 rounds are noisier than 200, so luck counts).' :
+    you > ref.tft ? 'You did better than tit-for-tat.' : 'Tit-for-tat would have done at least as well.') + '</p>' +
+    '<p>Its automaton (start state ' + esc(o.start) + '):</p><pre>' + esc(machine) + '</pre>' +
+    '<p><small>Seed ' + g.seed + '. Each state plays its move, then goes to the next state according to your move as it was played.</small></p>' +
+    '<p><button class="mv c" id="again">Play again</button></p>';
+  $('end').hidden = false; $('again').onclick = newGame; $('again').focus();
+}
+$('bC').onclick = () => play('C'); $('bD').onclick = () => play('D');
+document.addEventListener('keydown', e => { const k = e.key.toUpperCase(); if (k === 'C' || k === 'D') play(k); });
+newGame();
+</script>
