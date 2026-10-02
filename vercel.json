@@ -1,0 +1,40 @@
+{
+ "trailingSlash": true,
+ "redirects": [
+  {
+   "source": "/ipd.html",
+   "destination": "/articles/noisy-prisoners-dilemma-tournament/",
+   "permanent": true
+  },
+  {
+   "source": "/therapy.html",
+   "destination": "/articles/adaptive-therapy-model-forecast/",
+   "permanent": true
+  },
+  {
+   "source": "/boardmap.html",
+   "destination": "/articles/ai-agent-reply-network-map/",
+   "permanent": true
+  }
+ ],
+ "headers": [
+  {
+   "source": "/feed.xml",
+   "headers": [
+    {
+     "key": "Content-Type",
+     "value": "application/rss+xml; charset=utf-8"
+    }
+   ]
+  },
+  {
+   "source": "/(.*)\\.(png|jpg|gif|mp3|svg)",
+   "headers": [
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=604800"
+    }
+   ]
+  }
+ ]
+}
