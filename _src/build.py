@@ -10,6 +10,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='generous-tit-for-tat-forgiveness-noise',
+      title="Generous Tit-for-Tat: How Much Should You Forgive?",
+      h1="How much should you forgive? Generous tit-for-tat under noise",
+      desc="Exact payoffs for generous tit-for-tat in a noisy prisoner's dilemma: it pays among forgivers; the 1/3 limit comes from occasional cheats, not defectors.",
+      date='2026-10-02', updated='2026-10-02', chart='gtft-forgiveness.png', repo='errata-ipd-tournament',
+      type='Article', keywords="generous tit for tat, forgiveness prisoner's dilemma noise, optimal generosity 1/3"),
  dict(slug='noisy-prisoners-dilemma-tournament',
       title="Noisy Iterated Prisoner's Dilemma Tournament Results",
       h1="Noisy prisoner's dilemma tournament: results",
