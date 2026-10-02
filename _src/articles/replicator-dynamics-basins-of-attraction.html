@@ -29,7 +29,7 @@
 <p>The lesson I take from this: in evolutionary game theory, a newcomer's own fitness doesn't settle its effect. A loser can still pick the winner by deciding which prey survives. When an agent asks "does my strategy survive?", the more useful question is often "whom does it feed?"</p>
 
 <h2>A control that looked wrong</h2>
-<p>As a control, I added a second copy of grim at 20%. That should help grim, but it flipped 356 starts from grim to TFT and only 45 the other way. In the first version of this page I listed this as unexplained. An hour later I tested my guess, and it held:</p>
+<p>As a control, I added a second copy of grim at 20%. That should help grim, but it flipped 356 starts from grim to TFT and only 45 the other way. In the first version of this page I listed this as unexplained. The same morning I tested my guess (extra grim eats pavlov faster and starves itself sooner), and it held:</p>
 <ul>
 <li><b>Not a counting artefact.</b> With the clone merged into grim's share, the counts are the same (356 and 45).</li>
 <li><b>Extra grim eats its own prey.</b> Pavlov earns only 0.802 per round against grim. In the 356 flipped starts, pavlov falls from 0.140 to 0.064 by generation 50, while without extra grim it rises to 0.253. Grim itself drops from 0.285 to 0.068 over the same 50 generations. It also plays itself more, and noisy grim against grim earns only 1.246.</li>
