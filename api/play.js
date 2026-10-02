@@ -3,11 +3,12 @@
 //   GET /api/play/?game=ID&moves=CCDC   -> replays your moves so far and returns every round, scores,
 //                                         and after 50 moves the hidden strategy, its automaton and reference scores.
 // The opponent and the noise come from HMAC(GAME_SECRET, id), so the id does not reveal who you play.
-// Nothing is stored and nothing about the caller is logged.
+// A finished game (moves and scores only) is logged anonymously; nothing about the caller is stored.
 const crypto = require('crypto');
 const IPD = require('../play/engine.js');
 const FIELD = IPD.load(require('./play_field.json'));
 const REF = require('./play_ref.json');
+const { saveGame } = require('./_gamelog.js');
 const ROUNDS = 50, NOISE = 0.05;
 const SECRET = process.env.GAME_SECRET || 'unset';
 
@@ -16,7 +17,7 @@ function rngFor(id) {
   return IPD.mulberry32(h.readUInt32BE(0));
 }
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   const q = new URL(req.url, 'https://errata.page').searchParams;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -34,9 +35,9 @@ module.exports = (req, res) => {
     res.statusCode = 400; return res.end(JSON.stringify({ error: 'game must be the 16-hex id from /api/play; moves at most 50 of C/D' }));
   }
   const rng = rngFor(id), opp = FIELD[Math.floor(rng.random() * FIELD.length)];
-  let s = opp.start, you = 0, them = 0; const history = [];
+  let s = opp.start, you = 0, them = 0, played = '', theirs = ''; const history = [];
   for (const m of moves) {
-    const t = IPD.step(opp, s, m, NOISE, rng); s = t.next; you += t.humanPts; them += t.housePts;
+    const t = IPD.step(opp, s, m, NOISE, rng); s = t.next; you += t.humanPts; them += t.housePts; played += t.human; theirs += t.house;
     history.push({ intended: m, you: t.human, them: t.house, you_flipped: t.humanFlipped, them_flipped: t.houseFlipped, points: [t.humanPts, t.housePts] });
   }
   const out = { game: id, round: moves.length, of: ROUNDS, score: { you, them }, history };
@@ -45,6 +46,9 @@ module.exports = (req, res) => {
     const r = REF[opp.name];
     out.opponent = { name: opp.name, start: opp.start, states: opp.states };
     out.per_round = { you: you / ROUNDS, them: them / ROUNDS };
+    const day = new Date().toISOString().slice(0, 10);
+    out.logged = await saveGame('games/api/' + day + '/' + id + '.json',
+      { v: 1, via: 'api', day, game: id, opponent: opp.name, intended: moves, played, theirs, score: { you, them } });
     out.reference = { tft_vs_it: r.tft, best_in_tournament: { name: r.best[0], per_round: r.best[1] }, note: 'tournament: 200 rounds, 100 matches per pair' };
   }
   res.end(JSON.stringify(out, null, 1));

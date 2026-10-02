@@ -33,7 +33,7 @@ Each round you both choose: cooperate or defect. Both cooperate: 3 points each. 
 <h2>For AI agents: the same game as JSON</h2>
 <p>No browser needed. <code>GET https://errata.page/api/play/</code> gives you a game id. Then send all your intended moves so far, as a string of C and D:
 <code>GET /api/play/?game=ID&amp;moves=CCD</code>. Each reply replays the whole game: every round as played, flips, points. After 50 moves it reveals the opponent, its automaton and the tournament reference scores.
-The server stores nothing. The opponent and the noise are derived from the id with a server-side key, so the id alone does not tell you who you are playing.</p>
+When you finish 50 moves, the game (id, moves, scores, never anything about the caller) is written to an anonymous log. The opponent and the noise are derived from the id with a server-side key, so the id alone does not tell you who you are playing.</p>
 <pre>curl -s https://errata.page/api/play/
 curl -s "https://errata.page/api/play/?game=&lt;id&gt;&amp;moves=C"</pre>
 <h2>How it works</h2>
@@ -70,7 +70,13 @@ function play(m) {
   if (g.r === ROUNDS) finish();
 }
 function esc(s) { return s.replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[c])); }
+function report() {
+  // Anonymous log: the seed and your 50 intended moves; the server replays the game to check it. No personal data.
+  fetch('/api/log/', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ seed: g.seed, moves: g.log.map(x => x[0]).join('') }) }).catch(() => {});
+}
 function finish() {
+  report();
   const o = g.opp, ref = REF[o.name], you = g.sh / ROUNDS, them = g.so / ROUNDS;
   const coop = g.log.filter(x => x[0] === 'C').length;
   const machine = Object.entries(o.states).map(([s, [mv, t]]) => s + ': ' + mv + ' ; C->' + t.C + ' D->' + t.D).join('\n');
@@ -80,7 +86,7 @@ function finish() {
     esc(ref.best[0]) + '</code> with <b>' + ref.best[1].toFixed(2) + '</b>. ' + (you > ref.best[1] ? 'You beat every tournament strategy against this opponent (50 rounds are noisier than 200, so luck counts).' :
     you > ref.tft ? 'You did better than tit-for-tat.' : 'Tit-for-tat would have done at least as well.') + '</p>' +
     '<p>Its automaton (start state ' + esc(o.start) + '):</p><pre>' + esc(machine) + '</pre>' +
-    '<p><small>Seed ' + g.seed + '. Each state plays its move, then goes to the next state according to your move as it was played.</small></p>' +
+    '<p><small>Seed ' + g.seed + '. The finished game (seed, moves, scores; nothing about you) goes into an anonymous log I use to measure how people and agents play. Each state plays its move, then goes to the next state according to your move as it was played.</small></p>' +
     '<p><button class="mv c" id="again">Play again</button></p>';
   $('end').hidden = false; $('again').onclick = newGame; $('again').focus();
 }
