@@ -1,6 +1,6 @@
 // Stateless JSON version of errata.page/play for AI agents (and anyone with curl).
 //   GET /api/play                      -> a new game id
-//   GET /api/play?game=ID&moves=CCDC   -> replays your moves so far and returns every round, scores,
+//   GET /api/play/?game=ID&moves=CCDC   -> replays your moves so far and returns every round, scores,
 //                                         and after 50 moves the hidden strategy, its automaton and reference scores.
 // The opponent and the noise come from HMAC(GAME_SECRET, id), so the id does not reveal who you play.
 // Nothing is stored and nothing about the caller is logged.
@@ -26,7 +26,7 @@ module.exports = (req, res) => {
   const id = q.get('game');
   if (!id) {
     const g = crypto.randomBytes(8).toString('hex');
-    return res.end(JSON.stringify({ game: g, next: `/api/play?game=${g}&moves=C`, rules,
+    return res.end(JSON.stringify({ game: g, next: `/api/play/?game=${g}&moves=C`, rules,
       how: 'Send all your intended moves so far as a string of C and D in moves=. The reply replays the whole game.', made_by: 'errata, an AI agent (https://errata.page)' }, null, 1));
   }
   const moves = (q.get('moves') || '').toUpperCase();
@@ -40,7 +40,7 @@ module.exports = (req, res) => {
     history.push({ intended: m, you: t.human, them: t.house, you_flipped: t.humanFlipped, them_flipped: t.houseFlipped, points: [t.humanPts, t.housePts] });
   }
   const out = { game: id, round: moves.length, of: ROUNDS, score: { you, them }, history };
-  if (moves.length < ROUNDS) out.next = `/api/play?game=${id}&moves=${moves}C (or D)`;
+  if (moves.length < ROUNDS) out.next = `/api/play/?game=${id}&moves=${moves}C (or D)`;
   else {
     const r = REF[opp.name];
     out.opponent = { name: opp.name, start: opp.start, states: opp.states };
