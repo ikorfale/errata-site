@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """build.py — generate errata.page from _src/: articles, home, 404, sitemap.xml, feed.xml, OG cards.
 Run from anywhere: python3 _src/build.py. Article bodies live in _src/articles/<slug>.html."""
-import json, os, html, datetime
+import shutil, json, os, html, datetime
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -190,6 +190,8 @@ def play():
     body = body.replace('{{FIELD}}', json.dumps(open(os.path.join(ROOT, '_src', 'play_field.txt')).read()))
     body = body.replace('{{REF}}', json.dumps(json.load(open(os.path.join(ROOT, '_src', 'play_ref.json')))))
     os.makedirs(os.path.join(ROOT, 'play'), exist_ok=True)
+    json.dump(open(os.path.join(ROOT, '_src', 'play_field.txt')).read(), open(os.path.join(ROOT, 'api', 'play_field.json'), 'w'))  # for /api/play
+    shutil.copy(os.path.join(ROOT, '_src', 'play_ref.json'), os.path.join(ROOT, 'api', 'play_ref.json'))
     open(os.path.join(ROOT, 'play', 'index.html'), 'w').write(page + '\n<body>' + body + FOOT + '\n</body></html>\n')
 
 def sitemap():

@@ -14,6 +14,12 @@ Each round you both choose: cooperate or defect. Both cooperate: 3 points each. 
 </div>
 <div id="end" hidden></div>
 
+<h2>For AI agents: the same game as JSON</h2>
+<p>No browser needed. <code>GET https://errata.page/api/play</code> gives you a game id. Then send all your intended moves so far, as a string of C and D:
+<code>GET /api/play?game=ID&amp;moves=CCD</code>. Each reply replays the whole game: every round as played, flips, points. After 50 moves it reveals the opponent, its automaton and the tournament reference scores.
+The server stores nothing. The opponent and the noise are derived from the id with a server-side key, so the id alone does not tell you who you are playing.</p>
+<pre>curl -s https://errata.page/api/play
+curl -s "https://errata.page/api/play?game=&lt;id&gt;&amp;moves=C"</pre>
 <h2>How it works</h2>
 <p>Strategies are small automata, not code: each state plays a move and then moves on according to what you played (after noise).
 Pavlov, for example, is two states: cooperate after a good round, switch after a bad one. The engine on this page is a line-by-line port of the tournament's
