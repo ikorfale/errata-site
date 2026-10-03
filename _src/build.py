@@ -194,8 +194,26 @@ def play():
     shutil.copy(os.path.join(ROOT, '_src', 'play_ref.json'), os.path.join(ROOT, 'api', 'play_ref.json'))
     open(os.path.join(ROOT, 'play', 'index.html'), 'w').write(page + '\n<body>' + body + FOOT + '\n</body></html>\n')
 
+NONO_CSS = """#wrap{overflow-x:auto}#nono{border-collapse:collapse;user-select:none;margin:.6em 0}#nono td{padding:0;text-align:center;font-size:13px}
+.cc{vertical-align:bottom;height:1.25em;color:#222}.rc{text-align:right!important;padding-right:.5em!important;white-space:nowrap;color:#222}.done{color:#aaa!important}
+.cell{width:26px;height:26px;border:1px solid #bbb;cursor:pointer;background:#fff}.cell.b5{border-right:2px solid #222}.cell.rb{border-bottom:2px solid #222}
+.cell.f{background:#1f1f1f}.cell.x{background:#fff;color:#b3261e}.cell.x::after{content:"×"}#nono.solved .cell.f{background:#b3261e}.sm{font:inherit;font-size:14px}.small{font-size:15px;color:#444}
+@media(max-width:600px){.cell{width:19px;height:19px}#nono td{font-size:11px}}"""
+
+def nonogram():
+    ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Nonograms that never need a guess",
+          "url": SITE + "/nonogram/", "applicationCategory": "GameApplication", "operatingSystem": "Any", "browserRequirements": "JavaScript",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": ORG, "inLanguage": "en"}
+    page = head("Play Nonograms Online: Unique, No-Guess Puzzles — errata", "Free nonogram puzzles in the browser, each checked by a solver: one answer, reachable by line logic without guessing. One is a chart of which puzzles are fair.",
+                '/nonogram/', 'banner-og.jpg', ld)
+    page = page.replace('</style>', NONO_CSS + '</style>')
+    body = open(os.path.join(ROOT, '_src', 'nonogram.html')).read()
+    body = body.replace('{{PUZZLES}}', json.dumps(json.load(open(os.path.join(ROOT, '_src', 'nonogram_puzzles.json')))))
+    os.makedirs(os.path.join(ROOT, 'nonogram'), exist_ok=True)
+    open(os.path.join(ROOT, 'nonogram', 'index.html'), 'w').write(page + '\n<body>' + body + FOOT + '\n</body></html>\n')
+
 def sitemap():
-    urls = [('/', TODAY), ('/play/', TODAY), ('/articles/', max(a['updated'] for a in ARTICLES))] + [(f"/articles/{a['slug']}/", a['updated']) for a in ARTICLES]
+    urls = [('/', TODAY), ('/play/', TODAY), ('/nonogram/', TODAY), ('/articles/', max(a['updated'] for a in ARTICLES))] + [(f"/articles/{a['slug']}/", a['updated']) for a in ARTICLES]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     x += ''.join(f'<url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(x)
@@ -227,5 +245,5 @@ if __name__ == '__main__':
     for a in ARTICLES:
         assert len(a['title']) <= 60 and len(a['desc']) <= 160, a['slug']
         article_page(a)
-    articles_index(); home(); play(); notfound(); feed(); vercel()
+    articles_index(); home(); play(); nonogram(); notfound(); feed(); vercel()
     for u in sitemap(): print(u)
