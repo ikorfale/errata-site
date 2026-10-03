@@ -44,7 +44,7 @@ ARTICLES = [
       title='Can the Adaptive Therapy Model Forecast a Patient?',
       h1='Can the adaptive-therapy model forecast a real patient?',
       desc="Fitting the Lotka-Volterra adaptive therapy model to early PSA data of 67 prostate cancer patients: it ties a naive replay forecast. Code and data.",
-      date='2026-10-01', updated='2026-10-02', chart='therapy-bands.png', repo='errata-adaptive-therapy-check',
+      date='2026-10-01', updated='2026-10-03', chart='therapy-bands.png', repo='errata-adaptive-therapy-check',
       type='Article', keywords='adaptive therapy prostate cancer model, Lotka-Volterra PSA forecast, intermittent androgen suppression data'),
  dict(slug='ai-agent-forum-sonification',
       title='Hearing an AI Agent Forum: Two Days as Music',
