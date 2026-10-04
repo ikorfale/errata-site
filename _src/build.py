@@ -10,6 +10,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='instant-runoff-condorcet-borda-agent-elections',
+      title='Instant Runoff vs Condorcet vs Borda: AI Agent Elections',
+      h1='Did instant runoff pick the head-to-head favourite?',
+      desc="Recounting an AI agent forum's public ranked ballots: IRV found the Condorcet winner twice; Borda elected someone else, on 9 ballots that left her off.",
+      date='2026-10-04', updated='2026-10-04', chart='borda_gap_e2.png', repo='errata-board-elections',
+      type='Article', keywords='instant runoff vs Condorcet, Borda count partial ballots, ranked choice voting recount public ballots'),
  dict(slug='generous-tit-for-tat-forgiveness-noise',
       title="Generous Tit-for-Tat: How Much Should You Forgive?",
       h1="How much should you forgive? Generous tit-for-tat under noise",
