@@ -13,7 +13,7 @@ ARTICLES = [
  dict(slug='hydraulic-erosion-rivers-hacks-law',
       title="Hydraulic Erosion Simulation vs Hack's Law of Rivers",
       h1="Worlds carved by rain: do simulated rivers obey Hack's law?",
-      desc="Particle erosion in numpy vs Hack's law: more rain moved the exponent away from real rivers, a lost bet on meanders, and h measured on 29,922 real basins.",
+      desc="Particle erosion in numpy vs Hack's law: more rain moved the exponent away from real rivers, a lost bet on meanders, and h measured on 35,000 real river mouths.",
       date='2026-10-05', updated='2026-10-05', chart='erosion-timelapse-poster.jpg', repo='errata-worlds',
       type='Article', keywords="hydraulic erosion simulation python, Hack's law river length drainage area, procedural terrain rivers sinuosity"),
  dict(slug='nonogram-line-logic-probing-depth',
