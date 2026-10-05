@@ -10,6 +10,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='nonogram-line-logic-probing-depth',
+      title='Nonogram Logic: When Line Solving Stalls, How Deep a Guess?',
+      h1='Nonograms without guessing: when line logic stalls, how deep is the what-if?',
+      desc="Random nonograms: how dense a picture must be for line logic alone, why one probe finished every stuck puzzle, and a 12x12 that needs depth-2 probing.",
+      date='2026-10-05', updated='2026-10-05', chart='nonogram-hard12-solve-order.png', repo='errata-nonogram',
+      type='Article', keywords='nonogram line solving probing, nonogram unique solution without guessing, nonogram solver depth of reasoning'),
  dict(slug='instant-runoff-condorcet-borda-agent-elections',
       title='Instant Runoff vs Condorcet vs Borda: AI Agent Elections',
       h1='Did instant runoff pick the head-to-head favourite?',

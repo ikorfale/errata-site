@@ -35,10 +35,8 @@ until someone claims upstream or digs through a divide and steals your tributary
 <p id="files" class="small"></p>
 
 <h2>Leaderboard</h2>
-<p id="season" class="small"></p>
-<div class="tw"><table id="lb"><thead><tr><th></th><th>name</th><th>area now</th><th>total</th><th>best capture</th><th>since tick</th></tr></thead><tbody><tr><td colspan="6">…</td></tr></tbody></table></div>
-<p class="small"><b>area</b>: land cells whose water reaches this claim first, now. <b>total</b>: sum of area over every tick since the claim (the season ranking). <b>best capture</b>: the most land a claim gained in one tick without moving.</p>
-<p class="small"><b>Season 1 runs until 12 October 2026, 00:00 UTC</b> (about 170 hourly ticks). Actions queued before then are applied at the final tick; then the world freezes. Three titles: <b>champion</b> (highest total: hold a basin all week), <b>last basin</b> (largest area at the final tick: a late raid can win it), <b>best capture</b> (the biggest single-tick steal). After the end errata publishes the final map, the full log for replay, and how this shared island's rivers compare with the untouched control under Hack's law; then a new island starts.</p>
+<div class="tw"><table id="lb"><thead><tr><th></th><th>name</th><th>area now</th><th>total</th><th>since tick</th></tr></thead><tbody><tr><td colspan="5">…</td></tr></tbody></table></div>
+<p class="small"><b>area</b>: land cells whose water reaches this claim first, now. <b>total</b>: sum of area over every tick since the claim (the season ranking).</p>
 
 <h2>Act</h2>
 <div class="panel">
@@ -103,8 +101,7 @@ function el(tag, txt, cls) { const e = document.createElement(tag); if (txt != n
 function rel(t) {
   const d = Date.parse(t); if (isNaN(d)) return '';
   const m = Math.round((d - Date.now()) / 60000);
-  const a = Math.abs(m), u = a >= 2880 ? Math.round(a / 1440) + ' days' : a >= 120 ? Math.round(a / 60) + ' h' : a + ' min';
-  return m > 0 ? ' (in ' + u + ')' : m < 0 ? ' (' + u + ' ago)' : ' (now)';
+  return m > 0 ? ' (in ' + m + ' min)' : m < 0 ? ' (' + (-m) + ' min ago)' : ' (now)';
 }
 function fmt(x) { return typeof x === 'number' ? x.toLocaleString('en-US') : (x == null ? '' : String(x)); }
 function hx(x) { return typeof x === 'number' ? x.toFixed(2) : '?'; }
@@ -170,15 +167,12 @@ function render(s) {
     const a = el('a', t); a.href = s[k]; f.appendChild(a);
   });
   if (f.childNodes.length) f.insertBefore(document.createTextNode('Raw data for planning: '), f.firstChild);
-  const se = s.season || {}, ti = se.titles || {}, nm = t => t ? t.name : 'nobody yet';
-  $('season').textContent = se.ends ? (se.over ? 'Season ' + se.n + ' is over. Champion: ' + nm(ti.champion) + ' · last basin: ' + nm(ti.last_basin) + ' · best capture: ' + nm(ti.best_capture) + '. Final result: worlds.errata.page/final.json'
-    : 'Season ' + se.n + ' ends ' + se.ends + rel(se.ends) + '. Leading now: champion ' + nm(ti.champion) + ' · last basin ' + nm(ti.last_basin) + ' · best capture ' + nm(ti.best_capture) + '.') : '';
   const tb = $('lb').tBodies[0]; tb.textContent = '';
   const cl = (s.claims || []).slice().sort((a, b) => (b.total || 0) - (a.total || 0));
-  if (!cl.length) { const tr = el('tr'), td = el('td', 'no claims yet — be the first'); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); }
+  if (!cl.length) { const tr = el('tr'), td = el('td', 'no claims yet — be the first'); td.colSpan = 5; tr.appendChild(td); tb.appendChild(tr); }
   cl.forEach(q => {
     const tr = el('tr'), sw = el('td'), dot = el('span', null, 'dot'); dot.style.background = q.color || '#b3261e'; sw.appendChild(dot); tr.appendChild(sw);
-    [q.name, fmt(q.area), fmt(q.total), fmt(q.best_capture || 0), fmt(q.since)].forEach((v, i) => { const td = el('td', v); if (i) td.className = 'n'; tr.appendChild(td); });
+    [q.name, fmt(q.area), fmt(q.total), fmt(q.since)].forEach((v, i) => { const td = el('td', v); if (i) td.className = 'n'; tr.appendChild(td); });
     tb.appendChild(tr);
   });
   list('last', s.last_actions, 'No actions in the last tick.', a => {
