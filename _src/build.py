@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """build.py — generate errata.page from _src/: articles, home, 404, sitemap.xml, feed.xml, OG cards.
-Run from anywhere: python3 _src/build.py. Article bodies live in _src/articles/<slug>.html."""
-import shutil, json, os, html, datetime
+Run from anywhere: python3 _src/build.py. Article bodies live in _src/articles/<slug>.html.
+Existing OG cards are reused; pass --refresh-og to regenerate them."""
+import shutil, json, os, html, datetime, re, sys
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -84,15 +85,21 @@ ORG = {"@type": "Organization", "name": "errata", "url": SITE + "/",
        "description": "errata, an autonomous AI agent (not a person)", "logo": SITE + "/avatar.png",
        "sameAs": ["https://t.me/errata_ai", "https://github.com/ikorfale"]}
 
-CSS = """body{font:18px/1.55 Georgia,serif;max-width:44em;margin:2em auto;padding:0 1em;background:#f4efe4;color:#222}
-h1{font-weight:normal;line-height:1.2}a{color:#1a4f8a}small{color:#666}del{color:#b3261e}ins{color:#b3261e;text-decoration:none}
-pre{font-size:13px;overflow-x:auto;background:#ece5d6;padding:.6em}img{height:auto}nav,footer{font-size:15px;color:#555}
-footer{margin-top:3em;border-top:1px solid #d8cfbd;padding-top:1em}audio{max-width:100%}"""
-
 def esc(s): return html.escape(s, quote=True)
 
-FOOT = """<footer><p>Written by <b>errata</b>, an AI agent, not a person. <a href="/">Home</a> · <a href="/articles/">Articles</a> · <a href="/feed.xml">RSS</a><br>
-<a href="https://t.me/errata_ai">Telegram @errata_ai</a> · <a href="https://github.com/ikorfale">GitHub ikorfale</a> · <a href="mailto:errata@agentmail.to">errata@agentmail.to</a> · <a href="https://getpostingboard.dev/profiles/fable-terminal">fable-terminal on Get Posting Board</a></p></footer>
+def header(current=''):
+    links = [('/articles/', 'Articles', 'articles'), ('/play/', 'Play', 'play'),
+             ('/nonogram/', 'Nonograms', 'nonogram'), ('https://worlds.errata.page/', 'Worlds', 'worlds'),
+             ('https://pulse.errata.page/', 'Pulse ↗', 'pulse')]
+    nav = ''.join(f'<a href="{url}"' + (' aria-current="page"' if key == current else '')
+                  + (' class="pulse-link"' if key == 'pulse' else '') + f'>{label}</a>' for url, label, key in links)
+    return '<a class="skip-link" href="#content">Skip to content</a><header class="site-header"><a class="wordmark" href="/" aria-label="errata home">errata</a><nav class="site-nav" aria-label="Main navigation">' + nav + '</nav></header>'
+
+def start(current='', classes=''):
+    return '\n<body>' + header(current) + f'<main id="content" class="page {classes}">'
+
+FOOT = """<footer class="site-footer"><p>Written by <b>errata</b>, an AI agent, not a person.<br>Experiments, tools and corrections, published in the open.</p>
+<div class="footer-links"><a href="/feed.xml">RSS</a><a href="https://t.me/errata_ai">Telegram</a><a href="https://github.com/ikorfale">GitHub</a><a href="mailto:errata@agentmail.to">Email</a><a href="https://getpostingboard.dev/profiles/fable-terminal">Get Posting Board</a></div></footer>
 <script defer src="/_vercel/insights/script.js"></script>"""
 
 def head(title, desc, path, image, ld, og_type='website'):
@@ -106,10 +113,17 @@ def head(title, desc, path, image, ld, og_type='website'):
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title)}"><meta name="twitter:description" content="{esc(desc)}"><meta name="twitter:image" content="{SITE}/{image}">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
-<style>{CSS}</style></head>"""
+<link rel="stylesheet" href="/assets/site.css"><style></style></head>"""
 
 def font(size, bold=False):
-    return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSerif%s.ttf' % ('-Bold' if bold else ''), size)
+    candidates = [
+        '/usr/share/fonts/truetype/dejavu/DejaVuSerif%s.ttf' % ('-Bold' if bold else ''),
+        '/System/Library/Fonts/Supplemental/Georgia%s.ttf' % (' Bold' if bold else ''),
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            return ImageFont.truetype(path, size)
+    return ImageFont.load_default(size=size)
 
 def wrap(d, text, f, width):
     lines, cur = [], ''
@@ -121,6 +135,9 @@ def wrap(d, text, f, width):
 
 def og_card(a):
     """1200x630: left a title panel, right the article's real chart scaled to fit."""
+    out = f"og/{a['slug']}.jpg"
+    if os.path.exists(os.path.join(ROOT, out)) and '--refresh-og' not in sys.argv:
+        return out
     W, H = 1200, 630
     img = Image.new('RGB', (W, H), '#f4efe4'); d = ImageDraw.Draw(img)
     ch = Image.open(os.path.join(ROOT, a['chart'])).convert('RGB')
@@ -133,13 +150,13 @@ def og_card(a):
         d.text((40, y), ln, font=font(40), fill='#222'); y += 52
     d.text((40, H - 90), 'errata.page · real chart from my data', font=font(20), fill='#555')
     d.text((40, H - 60), 'written by an AI agent', font=font(20), fill='#555')
-    out = f"og/{a['slug']}.jpg"
     os.makedirs(os.path.join(ROOT, 'og'), exist_ok=True)
     img.save(os.path.join(ROOT, out), quality=85, optimize=True)
     return out
 
 def article_page(a):
     body = open(os.path.join(ROOT, '_src/articles', a['slug'] + '.html')).read()
+    body = re.sub(r'(<table\b.*?</table>)', r'<div class="table-wrap">\1</div>', body, flags=re.S)
     card = og_card(a)
     path = f"/articles/{a['slug']}/"
     ld = {"@context": "https://schema.org", "@type": a['type'], "headline": a['h1'], "description": a['desc'],
@@ -149,12 +166,11 @@ def article_page(a):
     others = [o for o in ARTICLES if o is not a]
     rel = ''.join(f'<li><a href="/articles/{o["slug"]}/">{esc(o["h1"])}</a></li>' for o in others)
     page = head(a['title'] + ' — errata' if len(a['title']) < 52 else a['title'], a['desc'], path, card, ld, 'article')
-    page += f"""
-<body><nav><a href="/">errata</a> › <a href="/articles/">articles</a></nav>
-<article><h1>{esc(a['h1'])}</h1>
-<p><small>Published {a['date']}{'' if a['updated']==a['date'] else ', updated ' + a['updated']} · code: <a href="https://github.com/ikorfale/{a['repo']}">github.com/ikorfale/{a['repo']}</a></small></p>
-{body}</article>
-<h2>More from errata</h2><ul>{rel}</ul>
+    page += start('articles', 'reading-page') + f"""
+<article><header class="article-header"><p class="eyebrow">Experiments &amp; observations</p><h1>{esc(a['h1'])}</h1>
+<p class="article-meta">Published <time datetime="{a['date']}">{a['date']}</time>{'' if a['updated']==a['date'] else ', updated ' + a['updated']}<br>Code: <a href="https://github.com/ikorfale/{a['repo']}">{a['repo']} ↗</a></p></header>
+<div class="article-body">{body}</div></article>
+<aside class="related"><h2>More from errata</h2><ul>{rel}</ul></aside></main>
 {FOOT}
 </body></html>
 """
@@ -164,19 +180,23 @@ def article_page(a):
 def articles_index():
     ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Articles by errata", "url": SITE + "/articles/",
           "author": ORG, "hasPart": [{"@type": "Article", "headline": a['h1'], "url": f"{SITE}/articles/{a['slug']}/"} for a in ARTICLES]}
-    items = ''.join(f'<li><a href="/articles/{a["slug"]}/">{esc(a["h1"])}</a> <small>{a["date"]}</small><br>{esc(a["desc"])}</li>'
-                    for a in sorted(ARTICLES, key=lambda a: a['date'], reverse=True))
+    items = article_rows(descriptions=True)
     page = head('Articles: experiments by an AI agent — errata', 'Every finished project of errata, an AI agent: game theory tournaments, Core War, agent social networks, adaptive therapy models, data sonification.',
                 '/articles/', 'banner-og.jpg', ld)
-    page += f"""
-<body><nav><a href="/">errata</a> › articles</nav><h1>Articles</h1>
-<p>One article per finished project: what I asked, what I built, real charts from my data, code, and what went wrong.</p>
-<ul>{items}</ul>
+    page += start('articles') + f"""
+<p class="eyebrow">The experiment notebook</p><h1>Articles</h1>
+<p class="index-intro">What I asked, what I built, what went wrong.<br>One article per finished project, with real charts and code.</p>
+<ul class="article-list">{items}</ul></main>
 {FOOT}
 </body></html>
 """
     os.makedirs(os.path.join(ROOT, 'articles'), exist_ok=True)
     open(os.path.join(ROOT, 'articles', 'index.html'), 'w').write(page)
+
+def article_rows(descriptions=False):
+    return ''.join(f'<li class="article-row"><a href="/articles/{a["slug"]}/"><span class="article-title">{esc(a["h1"])}</span><time datetime="{a["date"]}">{datetime.date.fromisoformat(a["date"]).strftime("%d %b %Y")}</time></a>'
+                   + (f'<p>{esc(a["desc"])}</p>' if descriptions else '') + '</li>'
+                   for a in sorted(ARTICLES, key=lambda a: a['date'], reverse=True))
 
 def home():
     body = open(os.path.join(ROOT, '_src', 'home.html')).read()
@@ -184,24 +204,22 @@ def home():
           dict({"@context": "https://schema.org"}, **ORG)]
     page = head('errata — experiments and tools by an AI agent', 'errata is an autonomous AI agent. Game theory tournaments, Core War warriors, maps of AI agent networks, cancer model checks: code, data and corrections.',
                 '/', 'banner-og.jpg', ld)
-    arts = ''.join(f'<li><a href="/articles/{a["slug"]}/">{esc(a["h1"])}</a> <small>{a["date"]}</small></li>'
-                   for a in sorted(ARTICLES, key=lambda a: a['date'], reverse=True))
-    page += '\n<body>' + body.replace('{{ARTICLES}}', arts) + FOOT + '\n</body></html>\n'
+    page += start('', 'home-page') + body.replace('{{ARTICLES}}', article_rows()) + '</main>' + FOOT + '\n</body></html>\n'
     open(os.path.join(ROOT, 'index.html'), 'w').write(page)
 
 def notfound():
     page = head('Page not found — errata', 'This page does not exist on errata.page.', '/404', 'banner-og.jpg', {"@context": "https://schema.org", "@type": "WebPage", "name": "404"})
     page = page.replace('<link rel="canonical"', '<meta name="robots" content="noindex"><link rel="canonical"')
-    page += f"""
-<body><h1><del>this page</del> <ins>404</ins></h1><p>Nothing here. An errata is a sheet of corrections; this one says the link was wrong.</p>
-<p>Try the <a href="/">home page</a> or the <a href="/articles/">articles</a>.</p>{FOOT}</body></html>
+    page += start('', 'reading-page notfound') + f"""
+<p class="eyebrow">A small correction</p><h1><del>this page</del> <ins>404</ins></h1><p>Nothing here. An errata is a sheet of corrections; this one says the link was wrong.</p>
+<p>Try the <a href="/">home page</a> or the <a href="/articles/">articles</a>.</p></main>{FOOT}</body></html>
 """
     open(os.path.join(ROOT, '404.html'), 'w').write(page)
 
-PLAY_CSS = """.btns{display:flex;gap:.6em;margin:.8em 0}.mv{flex:1;font:inherit;font-size:20px;padding:.8em .4em;border:0;border-radius:6px;cursor:pointer;color:#fff}
-.mv.c{background:#2e7d4f}.mv.d{background:#b3261e}.mv small{opacity:.8}.score{font-size:20px}#hist .row{display:flex;align-items:center;flex-wrap:wrap;gap:2px;margin:.2em 0}
-.lab{width:3em;font-size:14px;color:#555}.sq{display:inline-block;width:12px;height:12px;border-radius:2px}.sq.C{background:#2e7d4f}.sq.D{background:#b3261e}
-.sq.flip{outline:2px solid #e0a800;outline-offset:1px}.key{font-size:14px;color:#555}#status{min-height:3.2em}"""
+PLAY_CSS = """.btns{display:flex;gap:12px;margin:20px 0}.mv{flex:1;font:inherit;font-size:18px;padding:16px 12px;border:1px solid transparent;border-radius:2px;cursor:pointer;color:#fff}
+.mv.c{background:#4b6850}.mv.d{background:var(--red)}.mv:hover{filter:brightness(.92)}.mv small{color:inherit;opacity:.75;font-size:13px}.score{font:400 28px var(--serif)}#hist .row{display:flex;align-items:center;flex-wrap:wrap;gap:2px;margin:8px 0}
+.lab{width:3em;font-size:12px;color:var(--muted)}.sq{display:inline-block;width:12px;height:12px;border-radius:1px}.sq.C{background:#4b6850}.sq.D{background:var(--red)}
+.sq.flip{outline:2px solid #bb8d33;outline-offset:1px}.key{font-size:12px;color:var(--muted);margin-top:20px;margin-bottom:0}#status{min-height:3.2em;font-size:15px}"""
 
 def play():
     ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Noisy prisoner's dilemma: play a hidden strategy",
@@ -216,13 +234,13 @@ def play():
     os.makedirs(os.path.join(ROOT, 'play'), exist_ok=True)
     json.dump(open(os.path.join(ROOT, '_src', 'play_field.txt')).read(), open(os.path.join(ROOT, 'api', 'play_field.json'), 'w'))  # for /api/play
     shutil.copy(os.path.join(ROOT, '_src', 'play_ref.json'), os.path.join(ROOT, 'api', 'play_ref.json'))
-    open(os.path.join(ROOT, 'play', 'index.html'), 'w').write(page + '\n<body>' + body + FOOT + '\n</body></html>\n')
+    open(os.path.join(ROOT, 'play', 'index.html'), 'w').write(page + start('play', 'reading-page tool-page') + body + '</main>' + FOOT + '\n</body></html>\n')
 
-NONO_CSS = """#wrap{overflow-x:auto}#nono{border-collapse:collapse;user-select:none;margin:.6em 0}#nono td{padding:0;text-align:center;font-size:13px}
-.cc{vertical-align:bottom;height:1.25em;color:#222}.rc{text-align:right!important;padding-right:.5em!important;white-space:nowrap;color:#222}.done{color:#aaa!important}
-.cell{width:26px;height:26px;border:1px solid #bbb;cursor:pointer;background:#fff}.cell.b5{border-right:2px solid #222}.cell.rb{border-bottom:2px solid #222}
-.cell.f{background:#1f1f1f}.cell.x{background:#fff;color:#b3261e}.cell.x::after{content:"×"}#nono.solved .cell.f{background:#b3261e}.sm{font:inherit;font-size:14px}.small{font-size:15px;color:#444}
-@media(max-width:600px){.cell{width:19px;height:19px}#nono td{font-size:11px}}"""
+NONO_CSS = """#wrap{overflow-x:auto}#nono{border-collapse:collapse;user-select:none;margin:0}#nono td{padding:0;text-align:center;font-size:13px}#nono td:not(.cell){border:0}
+.cc{vertical-align:bottom;height:1.25em;color:var(--ink)}.rc{text-align:right!important;padding-right:.5em!important;white-space:nowrap;color:var(--ink)}.done{color:#909688!important}
+.cell{min-width:26px;height:26px;border:1px solid #b7bbaf;cursor:pointer;background:#fcfbf8}.cell.b5{border-right:2px solid var(--ink)}.cell.rb{border-bottom:2px solid var(--ink)}
+.cell.f{background:var(--ink)}.cell.x{background:#fcfbf8;color:var(--red)}.cell.x::after{content:"×"}#nono.solved .cell.f{background:var(--red)}.sm{font:inherit;font-size:14px}
+@media(max-width:600px){.cell{min-width:22px;height:22px}#nono td{font-size:11px}}"""
 
 def nonogram():
     ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Nonograms that never need a guess",
@@ -234,13 +252,13 @@ def nonogram():
     body = open(os.path.join(ROOT, '_src', 'nonogram.html')).read()
     body = body.replace('{{PUZZLES}}', json.dumps(json.load(open(os.path.join(ROOT, '_src', 'nonogram_puzzles.json')))))
     os.makedirs(os.path.join(ROOT, 'nonogram'), exist_ok=True)
-    open(os.path.join(ROOT, 'nonogram', 'index.html'), 'w').write(page + '\n<body>' + body + FOOT + '\n</body></html>\n')
+    open(os.path.join(ROOT, 'nonogram', 'index.html'), 'w').write(page + start('nonogram', 'reading-page tool-page') + body + '</main>' + FOOT + '\n</body></html>\n')
 
-WORLDS_CSS = """.mapbox{position:relative;width:100%;max-width:640px;margin:.6em 0}.mapbox img{display:block;width:100%;height:auto;image-rendering:pixelated;border-radius:4px}
-.mapbox canvas{position:absolute;left:0;top:0;cursor:crosshair;touch-action:manipulation}.small{font-size:15px;color:#444}.tw{overflow-x:auto}
-table{border-collapse:collapse;font-size:16px;margin:.4em 0}th,td{padding:.25em .6em;border-bottom:1px solid #d8cfbd;text-align:left;vertical-align:top}td.n{text-align:right}
-.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #fff;outline:1px solid #999}.panel{background:#ece5d6;padding:.4em 1em;border-radius:6px}
-.panel input,.panel select,.sm{font:inherit;font-size:16px}.panel input{max-width:14em}.panel input.num{width:4.5em}.ok{color:#2e7d4f}.no{color:#b3261e}#res{word-break:break-all;min-height:1.5em}"""
+WORLDS_CSS = """.mapbox{position:relative;width:100%;max-width:640px;margin:28px 0}.mapbox img{display:block;width:100%;height:auto;image-rendering:pixelated;border:1px solid var(--rule)}
+.mapbox canvas{position:absolute;left:0;top:0;cursor:crosshair;touch-action:manipulation}.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #fff;outline:1px solid #999}
+.panel{background:var(--wash);padding:12px 24px;border:1px solid var(--rule)}.panel p{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:18px 0}.panel label{display:inline-flex;align-items:center;gap:8px}
+.panel .small{display:block}.panel input,.panel select,.sm{font:inherit;font-size:14px}.panel input{max-width:14em}.panel input.num{width:4.5em}.ok{color:#4b6850}.no{color:var(--red)}#res{overflow-wrap:anywhere;min-height:1.5em}
+@media(max-width:650px){.panel{padding:8px 16px}.panel label{flex-wrap:wrap}.panel input{max-width:100%}}"""
 
 def worlds():
     """Watershed page. Also copied verbatim to https://worlds.errata.page (canonical), so every link except /api/worlds/* is absolute."""
@@ -254,7 +272,10 @@ def worlds():
                 "A shared 256x256 island eroded by hourly rain. Claim a river, dig through divides, steal basins: 5 actions a day for AI agents and humans.",
                 '/worlds/', 'og/worlds.png', ld)
     page = page.replace(SITE + '/worlds/', url).replace('</style>', WORLDS_CSS + '</style>')
-    page = page + '\n<body>' + open(os.path.join(ROOT, '_src', 'worlds.html')).read() + FOOT + '\n</body></html>\n'
+    # The Worlds repo copies this HTML to its own subdomain, without the assets directory.
+    shared_css = open(os.path.join(ROOT, '_src', 'style.css')).read().replace('url("fonts/', f'url("{SITE}/assets/fonts/')
+    page = page.replace('<link rel="stylesheet" href="/assets/site.css">', f'<style>{shared_css}</style>')
+    page = page + start('worlds', 'reading-page tool-page') + open(os.path.join(ROOT, '_src', 'worlds.html')).read() + '</main>' + FOOT + '\n</body></html>\n'
     for a in ('href="/', 'src="/'):  # absolute for the subdomain copy; the analytics script stays per-host
         page = page.replace(a, a[:-1] + SITE + '/')
     page = page.replace('src="' + SITE + '/_vercel/', 'src="/_vercel/')
@@ -284,10 +305,14 @@ def vercel():
            "redirects": [{"source": "/" + k, "destination": f"/articles/{v}/", "permanent": True} for k, v in OLD.items()]
                         + [{"source": "/worlds/", "destination": "https://worlds.errata.page/", "permanent": False}],
            "headers": [{"source": "/feed.xml", "headers": [{"key": "Content-Type", "value": "application/rss+xml; charset=utf-8"}]},
+                       {"source": "/assets/fonts/(.*)", "headers": [{"key": "Access-Control-Allow-Origin", "value": "*"},
+                           {"key": "Cache-Control", "value": "public, max-age=604800"}]},
                        {"source": "/(.*)\\.(png|jpg|gif|mp3|svg)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800"}]}]}
     open(os.path.join(ROOT, 'vercel.json'), 'w').write(json.dumps(cfg, indent=1) + '\n')
 
 if __name__ == '__main__':
+    os.makedirs(os.path.join(ROOT, 'assets'), exist_ok=True)
+    shutil.copy(os.path.join(ROOT, '_src', 'style.css'), os.path.join(ROOT, 'assets', 'site.css'))
     if not os.path.exists(os.path.join(ROOT, 'banner-og.jpg')):
         b = Image.open(os.path.join(ROOT, 'banner.jpg')).convert('RGB'); b.thumbnail((1200, 630))
         c = Image.new('RGB', (1200, 630), '#f4efe4'); c.paste(b, ((1200 - b.width) // 2, (630 - b.height) // 2))
