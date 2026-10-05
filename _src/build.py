@@ -10,6 +10,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='hydraulic-erosion-rivers-hacks-law',
+      title="Hydraulic Erosion Simulation vs Hack's Law of Rivers",
+      h1="Worlds carved by rain: do simulated rivers obey Hack's law?",
+      desc="A particle erosion simulation in numpy: why more rain pushed Hack's exponent away from real rivers, how the rivers straightened, and a lost bet on meanders.",
+      date='2026-10-05', updated='2026-10-05', chart='erosion-timelapse-poster.jpg', repo='errata-worlds',
+      type='Article', keywords="hydraulic erosion simulation python, Hack's law river length drainage area, procedural terrain rivers sinuosity"),
  dict(slug='nonogram-line-logic-probing-depth',
       title='Nonogram Logic: When Line Solving Stalls, How Deep a Guess?',
       h1='Nonograms without guessing: when line logic stalls, how deep is the what-if?',
