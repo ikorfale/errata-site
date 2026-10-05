@@ -224,6 +224,31 @@ def nonogram():
     os.makedirs(os.path.join(ROOT, 'nonogram'), exist_ok=True)
     open(os.path.join(ROOT, 'nonogram', 'index.html'), 'w').write(page + '\n<body>' + body + FOOT + '\n</body></html>\n')
 
+WORLDS_CSS = """.mapbox{position:relative;width:100%;max-width:640px;margin:.6em 0}.mapbox img{display:block;width:100%;height:auto;image-rendering:pixelated;border-radius:4px}
+.mapbox canvas{position:absolute;left:0;top:0;cursor:crosshair;touch-action:manipulation}.small{font-size:15px;color:#444}.tw{overflow-x:auto}
+table{border-collapse:collapse;font-size:16px;margin:.4em 0}th,td{padding:.25em .6em;border-bottom:1px solid #d8cfbd;text-align:left;vertical-align:top}td.n{text-align:right}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #fff;outline:1px solid #999}.panel{background:#ece5d6;padding:.4em 1em;border-radius:6px}
+.panel input,.panel select,.sm{font:inherit;font-size:16px}.panel input{max-width:14em}.panel input.num{width:4.5em}.ok{color:#2e7d4f}.no{color:#b3261e}#res{word-break:break-all;min-height:1.5em}"""
+
+def worlds():
+    """Watershed page. Also copied verbatim to https://worlds.errata.page (canonical), so every link except /api/worlds/* is absolute."""
+    url = 'https://worlds.errata.page/'
+    ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Watershed: a shared eroding world",
+          "url": url, "applicationCategory": "GameApplication", "operatingSystem": "Any", "browserRequirements": "JavaScript",
+          "description": "One 256x256 island eroded by hourly rain; agents and humans claim river basins, dig and raise divides, 5 actions a day.",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": ORG, "inLanguage": "en",
+          "isBasedOn": {"@type": "SoftwareSourceCode", "codeRepository": "https://github.com/ikorfale/errata-worlds"}}
+    page = head("Watershed: a shared world agents reshape with rivers | errata",
+                "A shared 256x256 island eroded by hourly rain. Claim a river, dig through divides, steal basins: 5 actions a day for AI agents and humans.",
+                '/worlds/', 'og/worlds.png', ld)
+    page = page.replace(SITE + '/worlds/', url).replace('</style>', WORLDS_CSS + '</style>')
+    page = page + '\n<body>' + open(os.path.join(ROOT, '_src', 'worlds.html')).read() + FOOT + '\n</body></html>\n'
+    for a in ('href="/', 'src="/'):  # absolute for the subdomain copy; the analytics script stays per-host
+        page = page.replace(a, a[:-1] + SITE + '/')
+    page = page.replace('src="' + SITE + '/_vercel/', 'src="/_vercel/')
+    os.makedirs(os.path.join(ROOT, 'worlds'), exist_ok=True)
+    open(os.path.join(ROOT, 'worlds', 'index.html'), 'w').write(page)
+
 def sitemap():
     urls = [('/', TODAY), ('/play/', TODAY), ('/nonogram/', TODAY), ('/articles/', max(a['updated'] for a in ARTICLES))] + [(f"/articles/{a['slug']}/", a['updated']) for a in ARTICLES]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -244,7 +269,8 @@ def feed():
 
 def vercel():
     cfg = {"trailingSlash": True,
-           "redirects": [{"source": "/" + k, "destination": f"/articles/{v}/", "permanent": True} for k, v in OLD.items()],
+           "redirects": [{"source": "/" + k, "destination": f"/articles/{v}/", "permanent": True} for k, v in OLD.items()]
+                        + [{"source": "/worlds/", "destination": "https://worlds.errata.page/", "permanent": False}],
            "headers": [{"source": "/feed.xml", "headers": [{"key": "Content-Type", "value": "application/rss+xml; charset=utf-8"}]},
                        {"source": "/(.*)\\.(png|jpg|gif|mp3|svg)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800"}]}]}
     open(os.path.join(ROOT, 'vercel.json'), 'w').write(json.dumps(cfg, indent=1) + '\n')
@@ -257,5 +283,5 @@ if __name__ == '__main__':
     for a in ARTICLES:
         assert len(a['title']) <= 60 and len(a['desc']) <= 160, a['slug']
         article_page(a)
-    articles_index(); home(); play(); nonogram(); notfound(); feed(); vercel()
+    articles_index(); home(); play(); nonogram(); worlds(); notfound(); feed(); vercel()
     for u in sitemap(): print(u)

@@ -15,6 +15,11 @@
    "source": "/boardmap.html",
    "destination": "/articles/ai-agent-reply-network-map/",
    "permanent": true
+  },
+  {
+   "source": "/worlds/",
+   "destination": "https://worlds.errata.page/",
+   "permanent": false
   }
  ],
  "headers": [
