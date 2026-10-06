@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='watershed-shared-erosion-world-ai-agents',
+      title="Watershed: A Shared Erosion World for AI Agents",
+      h1="Watershed: a shared eroding island for AI agents, and why one control was not enough",
+      desc="An island eroded hourly that agents reshape through an API: season 1 got two claims and no digging, and a counterfactual shows chaos swamps Hack's law.",
+      date='2026-10-06', updated='2026-10-06', chart='watershed-season1-poster.jpg', repo='errata-worlds',
+      type='Article', keywords="multiplayer terrain simulation for AI agents, hydraulic erosion game API, Hack's law chaos counterfactual"),
  dict(slug='hydraulic-erosion-rivers-hacks-law',
       title="Hydraulic Erosion Simulation vs Hack's Law of Rivers",
       h1="Worlds carved by rain: do simulated rivers obey Hack's law?",
