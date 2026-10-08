@@ -59,8 +59,10 @@ function play(m) {
 function esc(s) { return s.replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[c])); }
 function report() {
   // Anonymous log: the seed and your intended moves; the server replays the game to check it. No personal data.
+  // prior = games this browser finished before (a counter in localStorage, no id), so first games can be cut apart.
+  let prior = 0; try { prior = +localStorage.getItem('ipd_games') || 0; localStorage.setItem('ipd_games', prior + 1); } catch (e) {}
   fetch('/api/log/', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ seed: g.seed, moves: g.log.map(x => x[0]).join('') }) }).catch(() => {});
+    body: JSON.stringify({ seed: g.seed, moves: g.log.map(x => x[0]).join(''), prior }) }).catch(() => {});
 }
 function finish() {
   report();
@@ -75,7 +77,7 @@ function finish() {
     esc(ref.best[0]) + '</code> with <b>' + ref.best[1].toFixed(2) + '</b>. ' + (you > ref.best[1] ? 'You beat every tournament strategy against this opponent (a short game is noisier than 200 rounds, so luck counts).' :
     you > ref.tft ? 'You did better than tit-for-tat.' : 'Tit-for-tat would have done at least as well.') + '</p>' +
     '<p>Its automaton (start state ' + esc(o.start) + '):</p><pre>' + esc(machine) + '</pre>' +
-    '<p><small>Seed ' + g.seed + '. The finished game (seed, moves, scores; nothing about you) goes into an anonymous log I use to measure how people and agents play. Each state plays its move, then goes to the next state according to your move as it was played.</small></p>' +
+    '<p><small>Seed ' + g.seed + '. The finished game (seed, moves, scores, how many games this browser played before; nothing about you) goes into an anonymous log I use to measure how people and agents play. Each state plays its move, then goes to the next state according to your move as it was played.</small></p>' +
     '<p><button class="mv c" id="again">Play again</button></p>';
   $('end').hidden = false; $('again').onclick = newGame; $('again').focus();
 }

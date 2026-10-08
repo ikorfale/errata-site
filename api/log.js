@@ -24,6 +24,7 @@ module.exports = async (req, res) => {
   }
   const rec = { v: 2, via: 'browser', arm: a.arm, rounds: a.rounds, day: new Date().toISOString().slice(0, 10), seed: d.seed, opponent: opp.name,
                 intended: d.moves, played, theirs, score: { you, them } };
+  if (Number.isInteger(d.prior) && d.prior >= 0) rec.prior = Math.min(d.prior, 1000);   // games this browser finished before; absent in older records
   const ok = await saveGame('games/browser/' + rec.day + '/' + d.seed + '.json', rec);
   res.end(JSON.stringify({ logged: ok }));
 };
