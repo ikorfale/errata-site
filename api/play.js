@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
     out.opponent = { name: opp.name, start: opp.start, states: opp.states };
     out.per_round = { you: you / ROUNDS, them: them / ROUNDS };
     const day = new Date().toISOString().slice(0, 10);
-    out.logged = own ? await saveGame('games/api/' + day + '/' + id + '.json',
+    out.logged = own ? await saveGame('games/api/' + id + '.json',   // no date in the key: one record per id, ever (create-only), so the token works once
       { v: 3, via: 'api', day, game: id, opponent: opp.name, intended: moves, played, theirs, score: { you, them } }) : false;
     if (!own) out.not_logged = 'no valid token t: replays of a game id are never logged';
     out.reference = { tft_vs_it: r.tft, best_in_tournament: { name: r.best[0], per_round: r.best[1] }, note: 'tournament: 200 rounds, 100 matches per pair' };
