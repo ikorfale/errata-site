@@ -26,5 +26,5 @@ module.exports = async (req, res) => {
                 intended: d.moves, played, theirs, score: { you, them } };
   if (Number.isInteger(d.prior) && d.prior >= 0) rec.prior = Math.min(d.prior, 1000);   // games this browser finished before; absent in older records
   const ok = await saveGame('games/browser/' + d.seed + '.json', rec)   // no date in the key: a seed is logged once, ever;
-  res.end(JSON.stringify({ logged: ok }));
+  res.end(JSON.stringify(ok === 'exists' ? { logged: false, reason: 'already_logged' } : { logged: ok === 'logged' }));
 };

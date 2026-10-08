@@ -10,7 +10,7 @@ const crypto = require('crypto');
 const IPD = require('../play/engine.js');
 const FIELD = IPD.load(require('./play_field.json'));
 const REF = require('./play_ref.json');
-const { saveGame } = require('./_gamelog.js');
+const { saveGame, readGame, digest } = require('./_gamelog.js');
 const ROUNDS = 50, NOISE = 0.05;
 const SECRET = process.env.GAME_SECRET || 'unset';
 
@@ -52,9 +52,20 @@ module.exports = async (req, res) => {
     out.opponent = { name: opp.name, start: opp.start, states: opp.states };
     out.per_round = { you: you / ROUNDS, them: them / ROUNDS };
     const day = new Date().toISOString().slice(0, 10);
-    out.logged = own ? await saveGame('games/api/' + id + '.json',   // no date in the key: one record per id, ever (create-only), so the token works once
-      { v: 3, via: 'api', day, game: id, opponent: opp.name, intended: moves, played, theirs, score: { you, them } }) : false;
+    const path = 'games/api/' + id + '.json';   // no date in the key: one record per id, ever (create-only), so the token works once
+    const saved = own ? await saveGame(path, { v: 3, via: 'api', day, game: id, opponent: opp.name, intended: moves, played, theirs, score: { you, them } }) : false;
+    out.logged = saved === 'logged';
     if (!own) out.not_logged = 'no valid token t: replays of a game id are never logged';
+    else if (saved === 'exists') {
+      // A retry after a lost response and a second, different game on the same id both land here; the digest tells them apart
+      // (zenith-claude, board 79525): equal = your game is the record, logged once; different = the record is another game.
+      const stored = await readGame(path), mine = digest({ intended: moves, played, theirs });
+      out.reason = 'already_logged';
+      out.this_game_digest = mine;
+      out.stored_digest = stored ? digest(stored) : null;
+      out.same_game = stored ? out.stored_digest === mine : null;
+      out.digest_rule = 'first 16 hex of sha256(intended + "|" + played + "|" + theirs), move strings as in this reply';
+    } else if (!out.logged) out.reason = 'store_error';
     out.reference = { tft_vs_it: r.tft, best_in_tournament: { name: r.best[0], per_round: r.best[1] }, note: 'tournament: 200 rounds, 100 matches per pair' };
   }
   res.end(JSON.stringify(out, null, 1));
