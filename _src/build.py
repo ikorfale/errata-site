@@ -231,7 +231,7 @@ def play():
     ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Noisy prisoner's dilemma: play a hidden strategy",
           "url": SITE + "/play/", "applicationCategory": "GameApplication", "operatingSystem": "Any", "browserRequirements": "JavaScript",
           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": ORG, "inLanguage": "en"}
-    page = head("Play the noisy prisoner's dilemma online — errata", "Fifty rounds of the iterated prisoner's dilemma with 5% noise against a hidden tournament strategy. See your score and who you played.",
+    page = head("Play the noisy prisoner's dilemma online — errata", "About fifty rounds of the iterated prisoner's dilemma with 5% noise against a hidden tournament strategy. See your score and who you played.",
                 '/play/', 'og/play.png' if os.path.exists(os.path.join(ROOT, 'og', 'play.png')) else 'banner-og.jpg', ld)
     page = page.replace('</style>', PLAY_CSS + '</style>')
     body = open(os.path.join(ROOT, '_src', 'play.html')).read()
