@@ -79,6 +79,8 @@ function canon(raw) {
   const t2 = t.replace(/\n+$/, ''); if (t2 !== t) notes.push('final newline removed'); t = t2;
   if (/[ \t]+\n|[ \t]+$/.test(t)) notes.push('warning: some lines end in spaces or tabs, which are kept');
   if (t.includes('\uFEFF')) notes.push('warning: text contains a byte-order mark (U+FEFF), which is kept and hashed');
+  // A lone UTF-16 surrogate cannot be UTF-8; TextEncoder hashes it as U+FFFD (EF BF BD), strict decoders reject it (zenith #82574).
+  if (/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(t)) notes.push('warning: text contains an unpaired surrogate, which the browser hashes as U+FFFD; strict UTF-8 rejects it, so this hash is not portable');
   if (t.normalize('NFC') !== t) notes.push('warning: text is not in Unicode NFC form; it is hashed as typed');
   return [t, notes];
 }
@@ -95,12 +97,16 @@ const VARIANTS = [
   ['the text in Unicode NFD form', t => t.normalize('NFD')],
   ['the text with tabs turned into spaces', t => t.replace(/\t/g, ' ')],
 ];
-let cur = '', rev = 0;
+// Two counters (theone #82384, #82568). rev orders text edits, so a new text is never paired with an old digest.
+// vgen orders verdicts: every edit of the text or the claim bumps it, and a verify() that awaited anything writes
+// only if no edit came in meanwhile. A text edit clears the verdict at once, before its own digest resolves.
+let cur = '', rev = 0, vgen = 0;
 async function update() {
-  const my = ++rev; cur = ''; $('copy').disabled = true;
+  const my = ++rev; ++vgen; cur = ''; $('copy').disabled = true;
+  if ($('claim').value.trim()) { $('verdict').textContent = 'Hashing…'; $('verdict').className = ''; }
   const [t, notes] = canon($('txt').value);
   const h = await sha(t);
-  if (my !== rev) return;   // a newer edit started while this one hashed (theone #82384): never pair new text with an old digest
+  if (my !== rev) return;   // a newer edit started while this one hashed: never pair new text with an old digest
   cur = h; $('copy').disabled = false;
   $('hash').textContent = cur;
   const n = enc.encode(t).length;
@@ -108,17 +114,21 @@ async function update() {
   await verify();
 }
 async function verify() {
+  const g = ++vgen, fresh = () => g === vgen;
   const c = $('claim').value.trim().toLowerCase(), v = $('verdict');
   if (!c) { v.textContent = ''; v.className = ''; return; }
   if (!/^[0-9a-f]{64}$/.test(c)) { v.textContent = 'That is not a sha256 (64 hex characters).'; v.className = 'no'; return; }
+  if (!cur) { v.textContent = 'Hashing…'; v.className = ''; return; }   // the text's digest is pending; update() calls verify() when it lands
   if (c === cur) { v.textContent = 'Match: the revealed text is what was committed (canonical form).'; v.className = 'ok'; return; }
   const [t] = canon($('txt').value);
   // Diagnoses explain a mismatch; they do not pass the agreed canonical check (theone #82384). Tabs-to-spaces or trimming
   // can change meaning (a TSV field boundary), so the thread decides whether to accept a diagnosed reveal.
   const diag = what => { v.textContent = `Canonical MISMATCH. Diagnosis: the hash matches ${what}. That explains a likely accident, but it is not the agreed check; the thread decides whether to accept it.`; v.className = 'warn'; };
-  if (await sha($('txt').value) === c) { diag('the raw bytes as pasted (the committer did not normalise)'); return; }
+  const raw = await sha($('txt').value); if (!fresh()) return;
+  if (raw === c) { diag('the raw bytes as pasted (the committer did not normalise)'); return; }
   for (const [name, f] of VARIANTS) {
-    if (await sha(f(t)) === c) { diag(name); return; }
+    const h = await sha(f(t)); if (!fresh()) return;
+    if (h === c) { diag(name); return; }
   }
   v.textContent = 'No match, and none of the usual accidents explains it: the text differs from what was committed.'; v.className = 'no';
 }
