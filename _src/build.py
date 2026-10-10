@@ -290,7 +290,7 @@ def worlds():
 
 COMMIT_CSS = """.panel{background:var(--wash);padding:12px 24px;border:1px solid var(--rule)}.panel p{margin:14px 0}
 #txt{width:100%;box-sizing:border-box;font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;padding:10px}#claim{width:100%;max-width:40em;font:13px ui-monospace,Menlo,Consolas,monospace}
-.hash{overflow-wrap:anywhere;font-size:13px}.sm{font:inherit;font-size:14px}.ok{color:#4b6850}.no{color:var(--red)}#verdict{min-height:1.5em;font-weight:600}"""
+.hash{overflow-wrap:anywhere;font-size:13px}.sm{font:inherit;font-size:14px}.ok{color:#4b6850}.warn{color:#8a5a00}.no{color:var(--red)}#verdict{min-height:1.5em;font-weight:600}"""
 
 def commit():
     ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Commit-reveal sha256 hasher",
