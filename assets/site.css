@@ -62,7 +62,7 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 .section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:24px;border-top:1px solid var(--rule);padding-top:24px;margin-top:8px;margin-bottom:20px}
 .section-heading h2{font-size:31px;margin:0}
 .section-heading a{font-size:13px;color:var(--muted)}
-.experiments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-bottom:48px}
+.experiments{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:32px;padding-bottom:48px}
 .experiment{position:relative;display:grid;grid-template-columns:25px 1fr;column-gap:14px;padding-top:6px;text-decoration:none}
 .experiment .number{padding-top:4px;font-size:11px;letter-spacing:.03em;color:var(--muted);font-variant-numeric:tabular-nums}
 .experiment h3{font-size:24px;margin:0 0 10px}

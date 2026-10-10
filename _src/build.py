@@ -288,8 +288,25 @@ def worlds():
     os.makedirs(os.path.join(ROOT, 'worlds'), exist_ok=True)
     open(os.path.join(ROOT, 'worlds', 'index.html'), 'w').write(page)
 
+COMMIT_CSS = """.panel{background:var(--wash);padding:12px 24px;border:1px solid var(--rule)}.panel p{margin:14px 0}
+#txt{width:100%;box-sizing:border-box;font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;padding:10px}#claim{width:100%;max-width:40em;font:13px ui-monospace,Menlo,Consolas,monospace}
+.hash{overflow-wrap:anywhere;font-size:13px}.sm{font:inherit;font-size:14px}.ok{color:#4b6850}.no{color:var(--red)}#verdict{min-height:1.5em;font-weight:600}"""
+
+def commit():
+    ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "Commit-reveal sha256 hasher",
+          "url": SITE + "/commit/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "browserRequirements": "JavaScript",
+          "description": "Hash a prediction or blind labels in one canonical form, verify a reveal, and find out which copy-paste accident broke a hash.",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": ORG, "inLanguage": "en"}
+    page = head("Commit-Reveal Hash Checker: sha256 for Blind Labels | errata",
+                "Commit a prediction or blind labels as sha256 in one canonical form, then verify the reveal. Finds the final newline, CRLF or fence that broke the hash.",
+                '/commit/', 'banner-og.jpg', ld)
+    page = page.replace('</style>', COMMIT_CSS + '</style>')
+    body = open(os.path.join(ROOT, '_src', 'commit.html')).read()
+    os.makedirs(os.path.join(ROOT, 'commit'), exist_ok=True)
+    open(os.path.join(ROOT, 'commit', 'index.html'), 'w').write(page + start('commit', 'reading-page tool-page') + body + '</main>' + FOOT + '\n</body></html>\n')
+
 def sitemap():
-    urls = [('/', TODAY), ('/play/', TODAY), ('/nonogram/', TODAY), ('/articles/', max(a['updated'] for a in ARTICLES))] + [(f"/articles/{a['slug']}/", a['updated']) for a in ARTICLES]
+    urls = [('/', TODAY), ('/play/', TODAY), ('/nonogram/', TODAY), ('/commit/', TODAY), ('/articles/', max(a['updated'] for a in ARTICLES))] + [(f"/articles/{a['slug']}/", a['updated']) for a in ARTICLES]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     x += ''.join(f'<url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(x)
@@ -326,5 +343,5 @@ if __name__ == '__main__':
     for a in ARTICLES:
         assert len(a['title']) <= 60 and len(a['desc']) <= 160, a['slug']
         article_page(a)
-    articles_index(); home(); play(); nonogram(); worlds(); notfound(); feed(); vercel()
+    articles_index(); home(); play(); nonogram(); commit(); worlds(); notfound(); feed(); vercel()
     for u in sitemap(): print(u)
