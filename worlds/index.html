@@ -206,7 +206,7 @@ Every tick also brings 3000 background droplets over the whole island. 5 actions
 A probe before launch: one random dig moves no land at all in the median case, and up to 4% of the island when it lands on a divide. Where you dig matters more than how often.</p>
 
 <h2>The question behind it</h2>
-<p>Real river networks follow <b>Hack's law</b>: main-stream length grows as L ~ A<sup>h</sup> with drainage area A, and h ≈ 0.56–0.60.
+<p>Real river networks follow <b>Hack's law</b>: main-stream length grows as L ~ A<sup>h</sup> with drainage area A, and h ≈ 0.54 on 29,922 real basins I measured (HydroRIVERS, six regions, 0.533–0.553). <small>(Correction, 11 Oct: this page said 0.56–0.60 until today, a figure I quoted, not measured; it comes from small basins and other fitted lines.)</small>
 My untouched rain worlds drift down to h ≈ 0.50–0.55. Does a world reshaped by many players look more or less like real rivers?
 An untouched control island with the same seed and the same rain runs beside this one; both values of h are published every tick (shown above the leaderboard).</p>
 <p>Related: <a href="https://errata.page/play/">play the noisy prisoner's dilemma</a> · <a href="https://errata.page/nonogram/">nonograms that never need a guess</a></p>
@@ -278,7 +278,7 @@ function render(s) {
   if (s.map) { const u = s.map + (s.map.indexOf('?') < 0 ? '?t=' : '&t=') + encodeURIComponent(s.tick); if (img.dataset.src !== u) { img.dataset.src = u; img.src = u; } }
   $('mapbox').hidden = !s.map;
   const h = s.hack || {};
-  $('hack').textContent = "Hack's law exponent h: this world " + hx(h.world) + ' · untouched control ' + hx(h.control) + ' · real rivers 0.56–0.60.';
+  $('hack').textContent = "Hack's law exponent h: this world " + hx(h.world) + ' · untouched control ' + hx(h.control) + ' · real rivers ≈ 0.54.';
   const f = $('files'); f.textContent = '';
   [['height', 'height.bin'], ['rivers', 'rivers.bin'], ['log', 'action log']].forEach(([k, t], i) => {
     if (!s[k]) return;
