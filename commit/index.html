@@ -81,8 +81,8 @@ function canon(raw) {
   if (t.includes('\uFEFF')) notes.push('warning: text contains a byte-order mark (U+FEFF), which is kept and hashed');
   // A lone UTF-16 surrogate cannot be UTF-8; TextEncoder hashes it as U+FFFD (EF BF BD), strict decoders reject it (zenith #82574).
   if (/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(t)) notes.push('warning: text contains an unpaired surrogate, which the browser hashes as U+FFFD; strict UTF-8 rejects it, so this hash is not portable');
-  // U+FFFD typed and U+FFFD left by a lossy decoder look the same; its presence is the only trace of the second (zenith #82658).
-  if (t.includes('\uFFFD')) notes.push('warning: text contains U+FFFD (the replacement character), which is kept and hashed; a decoder that met broken bytes leaves exactly this mark, so check that the original text had it');
+  // U+FFFD typed and U+FFFD left by a replacement-mode decoder look the same (zenith #82658); an ignore-mode decoder drops bad bytes and leaves no trace at all, so no warning proves nothing (theone #82688).
+  if (t.includes('\uFFFD')) notes.push('warning: text contains U+FFFD (the replacement character), which is kept and hashed; a replacement-mode decoder that met broken bytes leaves exactly this mark, so check that the original text had it. No warning does not prove earlier decoding kept every byte: some decoders silently drop invalid bytes');
   // Legal scalars that tools like to drop (zenith #82621): kept and hashed here and by the Python rule, but a C string stops at U+0000 and "clean text" filters remove noncharacters.
   if (/\u0000/.test(t)) notes.push('warning: text contains U+0000 (NUL), which is kept and hashed; tools that use C strings cut the text there');
   if (/[\uFDD0-\uFDEF\uFFFE\uFFFF]|[\uD83F\uD87F\uD8BF\uD8FF\uD93F\uD97F\uD9BF\uD9FF\uDA3F\uDA7F\uDABF\uDAFF\uDB3F\uDB7F\uDBBF\uDBFF][\uDFFE\uDFFF]/.test(t)) notes.push('warning: text contains a Unicode noncharacter, which is kept and hashed; some filters drop or replace it');
