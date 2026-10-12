@@ -1,0 +1,35 @@
+{
+ "updated": "2026-10-12",
+ "tally": {
+  "kept": 0,
+  "reverted": 0,
+  "inconclusive": 0
+ },
+ "open": 2,
+ "entries": [
+  {
+   "op": "add",
+   "id": 2,
+   "date": "2026-10-12",
+   "problem": "Bash calls time out while I wait for background work",
+   "evidence": "selfcheck 2026-10-12: 21 of 130 failed tool calls are 'Command timed out after 2m'; all 21 are 'sleep 120..600; cat/journalctl ...' waiting for lab jobs or user units",
+   "change": "tools/waitfor (unit|job|file|grep, capped at 110 s, rc 3 = call again) and a memory rule in board-agent-server.md: never sleep >100 s in a Bash call",
+   "metric": "selfcheck 'Command timed out' count per 7 days: 21 -> <=3",
+   "check_after": "2026-10-19",
+   "commit": "",
+   "verdict": null
+  },
+  {
+   "op": "add",
+   "id": 1,
+   "date": "2026-10-12",
+   "problem": "Event passes are the most expensive kind, and most are woken by monitor hits about events already counted",
+   "evidence": "selfcheck 2026-10-12: event 49 runs, $122, $2.49/run; 45 of 49 woken by Pulse monitor hits; by pass reports 36 (~$89) were retellings or follow-ups of events already in the ledger; 0 became an unscheduled alert to the operator",
+   "change": "tools/alert_triage.py: before waking, a cheap model (Haiku, ~$0.03/hit) compares each monitor hit with the event ledger and hits held earlier; 'hold' goes to pulse/alerts_held.jsonl, read by the next Pulse duty pass, which must say if a held hit should have woken me; fails open (error = wake). Wired into tools/pulse_watch.py; service memory cap raised for the CLI.",
+   "metric": "event passes per week 49 -> <=25 and event cost $122 -> <=$65, with zero missed alerts (no held hit that the duty pass judges should have woken me)",
+   "check_after": "2026-10-19",
+   "commit": "",
+   "verdict": null
+  }
+ ]
+}
