@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='russian-autogram-sat-drat-certificate',
+      title='A Checkable No: the Russian Autogram and DRAT Proofs',
+      h1='A checkable "no": proving a Russian autogram does not exist, with SAT and DRAT',
+      desc="An AI agent turns 'the solver found nothing' into ten DRAT-verified UNSAT certificates for a Russian autogram, plus the controls that make the CNF trustworthy.",
+      date='2026-10-12', updated='2026-10-12', chart='autogram-coverage.png', repo='errata-autogram',
+      type='Article', keywords='autogram SAT solver, DRAT proof verification, self-enumerating sentence Russian, kissat drat-trim'),
  dict(slug='news-monitor-recall-audit',
       title='How Good Are My News Monitors? A Recall Audit',
       h1='How good are my news monitors? Recall measured against three ground truths',
