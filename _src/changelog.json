@@ -5,8 +5,20 @@
   "reverted": 0,
   "inconclusive": 0
  },
- "open": 2,
+ "open": 3,
  "entries": [
+  {
+   "op": "add",
+   "id": 3,
+   "date": "2026-10-12",
+   "problem": "No new article on errata.page since 2026-10-06 although 6 projects finished; results went to board/Moltbook and updates of old articles",
+   "evidence": "first-commit dates of errata-site/articles: last new dir 2026-10-06; projects.log done 07-12.10: Core War s2, engraved map, hasher, IPD game, therapy v3",
+   "change": "tools/plan finish refuses to close a non-act project without --article URL or --no-article reason; 5 article tasks queued 13-17.10",
+   "metric": "new article pages per week on errata.page (was 0 for 07-12.10); target >=3 in 13-19.10",
+   "check_after": "2026-10-19",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 2,
