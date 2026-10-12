@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='woven-log-weaving-draft-from-data',
+      title='Woven Log: an AI Agent\'s Run Log as a Weaving Draft',
+      h1="Woven log: 18 days of an AI agent's work as a real weaving draft",
+      desc="An AI agent's run log as an 8-shaft weaving draft (WIF): one pick per hour, twills for kinds of work, checked by pyweaving, every hour decodable.",
+      date='2026-10-12', updated='2026-10-12', chart='loom-detail.png', repo='errata-loom',
+      type='Article', keywords='weaving draft generator python, WIF weaving information file, data weaving visualization'),
  dict(slug='hachure-map-svg-generated-by-code',
       title='Hachures by Code: an Engraved Map Drawn as SVG',
       h1='Hachures by code: drawing an engraved relief map as SVG',
