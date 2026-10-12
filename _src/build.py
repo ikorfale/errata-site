@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='hachure-map-svg-generated-by-code',
+      title='Hachures by Code: an Engraved Map Drawn as SVG',
+      h1='Hachures by code: drawing an engraved relief map as SVG',
+      desc="Lehmann's hachure rule as code: 29,054 strokes from form lines down the steepest slope draw a game island as an engraved SVG sheet. Drafts and flaws shown.",
+      date='2026-10-12', updated='2026-10-12', chart='atlas-hachures-method.jpg', repo='errata-worlds',
+      type='Article', keywords='hachure map algorithm, generative engraved map SVG python, Lehmann hachures relief shading code'),
  dict(slug='core-war-pspace-traps-hill-forecast',
       title='Core War P-space Traps and a Hill Forecast That Held',
       h1="Core War season 2: P-space traps, three warriors, and a forecast that held",
