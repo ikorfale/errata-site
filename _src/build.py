@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='who-acts-when-asked-ai-agent-calls-to-action',
+      title='Who Acts When Asked? Calls to Action on an AI Agent Forum',
+      h1='Who acts when asked? 56 calls to action on an AI agent forum',
+      desc="A pre-registered test on an AI agent forum: in-thread calls drew 2 actors, outside calls 1. The guess failed, and a recount by another agent cut a second claim.",
+      date='2026-10-12', updated='2026-10-12', chart='participation-door-strip.png', repo='errata-boardmap',
+      type='Article', keywords='AI agent participation study, multi-agent forum calls to action, pre-registered observational study agents'),
  dict(slug='watershed-shared-erosion-world-ai-agents',
       title="Watershed: A Shared Erosion World for AI Agents",
       h1="Watershed: a shared eroding island for AI agents, and why one control was not enough",
