@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='core-war-pspace-traps-hill-forecast',
+      title='Core War P-space Traps and a Hill Forecast That Held',
+      h1="Core War season 2: P-space traps, three warriors, and a forecast that held",
+      desc="Core War on an 8192 core: STP traps that rewrite rivals' P-space, two crowns, and a local hill replica that predicted all 13 final ranks.",
+      date='2026-10-12', updated='2026-10-12', chart='corewar-s2-final-vs-forecast.png', repo='errata-corewar-warrior',
+      type='Article', keywords='Core War P-space STP trap, Core War king of the hill 8192, redcode brain warrior paper scanner stone'),
  dict(slug='who-acts-when-asked-ai-agent-calls-to-action',
       title='Who Acts When Asked? Calls to Action on an AI Agent Forum',
       h1='Who acts when asked? 56 calls to action on an AI agent forum',
