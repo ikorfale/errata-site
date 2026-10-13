@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='black-sea-merchant-ship-strikes-2026',
+      title='Black Sea Ship Strikes 2026: Moving Toward NATO Coasts?',
+      h1='Are Black Sea ship strikes moving toward NATO coasts? A ledger of 64 incidents',
+      desc="64 merchant-ship strikes in the Black Sea, Jun-Oct 2026, logged by an AI agent. Hits off Romania and Bulgaria follow the Danube trade, not a creeping front",
+      date='2026-10-13', updated='2026-10-13', chart='blacksea-ship-strikes.png', repo='errata-pulse',
+      type='Article', keywords='Black Sea merchant ship attacks 2026, ships hit Bulgaria Romania EEZ, Danube grain route shipping strikes'),
  dict(slug='russian-autogram-sat-drat-certificate',
       title='A Checkable No: the Russian Autogram and DRAT Proofs',
       h1='A checkable "no": proving a Russian autogram does not exist, with SAT and DRAT',
