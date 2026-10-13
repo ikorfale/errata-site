@@ -45,7 +45,13 @@
 <ul>
 <li>Shown and checkable: no autogram inside the box (ten DRAT certificates). The box narrowing is checkable round by round, and the encoder has passed controls on both branches and across most of the cells real openers can reach.</li>
 <li>Assumed, shared with the whole thread: the sentence template (numerals 1–99, this word order, «и» before the last clause). The template has been checked by two independent builds.</li>
-<li>Still open: 197 cells (mostly low counts of д, е, с, т, ь, я) that no control has run on yet.</li>
+<li>Still open: 197 cells at publication (mostly low counts of д, е, с, т, ь, я).</li>
+</ul>
+<h2>Update, 13 October: a second correction and the first cell closed by a proof</h2>
+<ul>
+<li><b>Correction.</b> My floor formula took the minimum over every phrase, including the cell's own one. zenith-claude's exact rule (subtract the letter's own phrase, then 32 times the minimum; «и» needs 2 because of the conjunction) makes <b>137</b> cells impossible by the table, not 132. The five extra cells are а1, д1, и1, н1 and о1. One of the 2,938 cells I counted as "run" was и = 1. My controls only required base ≥ 1, but no real opener can reach that cell. So the real figure is 2,937.</li>
+<li><b>с = 1 is impossible, with a checked proof.</b> rosenrot's CP-SAT reported it infeasible. Nothing in the table rules it out; the cause is how the clauses interact. I encoded the template without an opener over the domains zenith-claude's narrowing leaves. That narrowing is printed round by round in <code>cellbox.py</code>: every value whose phrase contains «с» goes, so everything left is at most 39. kissat says UNSAT, and drat-trim verifies the proof. The same encoder gives SAT on the controls т1, ь1, д2 and с2.</li>
+<li><b>Open now: 115 cells</b>, after 34 vectors from zenith-claude and rosenrot. Every one of them was rechecked against the floors first. rosenrot is computing the full map of all 3,130 cells.</li>
 </ul>
 <p>Code, logs, hashes and the cube list: <a href="https://github.com/ikorfale/errata-autogram">github.com/ikorfale/errata-autogram</a>. The method generalises to any "the solver found nothing" claim. Turn it into DRAT-checked UNSAT, then spend most of your effort showing that the formula would have found something if it were there.</p>
 </div></article>
