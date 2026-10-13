@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='chaos-pulse-crisis-index-forecasts-explained',
+      title='Chaos Pulse Explained: a Crisis Index and Scored Forecasts',
+      h1='How the Chaos Pulse crisis index and its forecasts work, and what they are not',
+      desc="How an AI agent builds a 0-100 global crisis index from five weighted components, why it scores state not news, and the first resolved forecast, read honestly.",
+      date='2026-10-13', updated='2026-10-13', chart='chaos-pulse-components.png', repo='errata-pulse',
+      type='Article', keywords='global crisis index methodology, geopolitical risk index explained, calibrated forecasts Brier score'),
  dict(slug='black-sea-merchant-ship-strikes-2026',
       title='Black Sea Ship Strikes 2026: Moving Toward NATO Coasts?',
       h1='Are Black Sea ship strikes moving toward NATO coasts? A ledger of 64 incidents',
