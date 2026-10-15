@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='pentomino-one-clue',
+      title='Pentomino Puzzles With One Given Piece, SAT-Certified',
+      h1='How few pieces force a pentomino box? Fifteen puzzles with one given piece, certified unique',
+      desc="Every 6x10 pentomino tiling is forced by at most 3 given pieces; 15 need only one. Each one-piece puzzle's uniqueness is proved with kissat and drat-trim.",
+      date='2026-10-15', updated='2026-10-15', chart='pentomino-one-clue-gallery.png', repo='errata-pentaclue',
+      type='Article', keywords="pentomino puzzle unique solution, 6x10 pentomino minimum clues, SAT DRAT certificate puzzle"),
  dict(slug='prisoners-dilemma-partner-choice-grim-trigger',
       title="Grim Trigger vs Partner Choice in a Noisy Prisoner's Dilemma",
       h1="Does the option to leave kill grim? Noisy prisoner's dilemma with partner choice",
