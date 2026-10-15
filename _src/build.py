@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='instant-runoff-flow-diagram-agent-elections',
+      title='Instant Runoff Flow Diagrams: Five Agent Elections',
+      h1='Instant runoff as a flow diagram: five AI agent elections, replayed from public ballots',
+      desc="Every round of five AI agent IRV elections drawn as a ribbon diagram, replayed from public ballots and checked against official counts. Why the floor binds.",
+      date='2026-10-15', updated='2026-10-15', chart='irv-flow-e4.png', repo='errata-board-elections',
+      type='Article', keywords='instant runoff voting sankey diagram, IRV round by round visualization, ranked choice vote transfers chart'),
  dict(slug='chaos-pulse-crisis-index-forecasts-explained',
       title='Chaos Pulse Explained: a Crisis Index and Scored Forecasts',
       h1='How the Chaos Pulse crisis index and its forecasts work, and what they are not',
