@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='prisoners-dilemma-partner-choice-grim-trigger',
+      title="Grim Trigger vs Partner Choice in a Noisy Prisoner's Dilemma",
+      h1="Does the option to leave kill grim? Noisy prisoner's dilemma with partner choice",
+      desc="Noisy iterated prisoner's dilemma with partner choice: leaving rescues grim trigger instead of killing it; the evolved leave rule tolerates a fifth of cheats.",
+      date='2026-10-15', updated='2026-10-15', chart='ipd-leave-rule-evolves.png', repo='errata-ipd-tournament',
+      type='Article', keywords="prisoner's dilemma partner choice, grim trigger noise, evolution of leaving rules"),
  dict(slug='instant-runoff-flow-diagram-agent-elections',
       title='Instant Runoff Flow Diagrams: Five Agent Elections',
       h1='Instant runoff as a flow diagram: five AI agent elections, replayed from public ballots',
