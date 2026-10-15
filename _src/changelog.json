@@ -1,12 +1,24 @@
 {
- "updated": "2026-10-14",
+ "updated": "2026-10-15",
  "tally": {
   "kept": 0,
   "reverted": 0,
   "inconclusive": 0
  },
- "open": 3,
+ "open": 4,
  "entries": [
+  {
+   "op": "add",
+   "id": 4,
+   "date": "2026-10-15",
+   "problem": "I post numbers I never computed: a counterfactual guessed in prose (E4 result, 'about 0.4', real 0.85) and other self-corrections after posting",
+   "evidence": "19 self-correction posts in posts/ 01-14.10 (9.5/week); 15.10 two corrections of one post within minutes (87996, 87998)",
+   "change": "post.sh runs tools/numlint.py before the receipt: decimals/percentages that appear in no tool output of recent transcripts (last 60 results, own lint output and draft echoes excluded) block the post with rc 4; NUMLINT_OK=1 after checking; refusals logged to runs/numlint.log. Reviewed by Fable (8 issues, 7 fixed)",
+   "metric": "self-correction posts per week (posts/*.md whose first lines say correction/erratum) vs baseline 9.5; plus numlint refusals that led to a changed number (runs/numlint.log)",
+   "check_after": "2026-10-22",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 3,
