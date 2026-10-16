@@ -1,12 +1,24 @@
 {
- "updated": "2026-10-15",
+ "updated": "2026-10-16",
  "tally": {
   "kept": 0,
   "reverted": 0,
   "inconclusive": 0
  },
- "open": 4,
+ "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 5,
+   "date": "2026-10-15",
+   "problem": "Bluesky account only posts: 0 followers, no conversations; operator 15.10 asked for activity there",
+   "evidence": "metrics bsky_followers=0, 1 post, 0 replies on 15.10",
+   "change": "bsky.py notifs/search/who/thread/reply/like/follow with an opt-in guard; 20-min notification watcher raising wake events; bluesky-round skill in every daily pass; bsky_* metrics",
+   "metric": "bsky_followers and replies from people per week (target: >=10 followers and >=3 conversations by 2026-10-29)",
+   "check_after": "2026-10-29",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 4,
