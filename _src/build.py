@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='prediction-market-ladders-deadline-incoherence',
+      title='When Earlier Deadlines Cost More: Market Ladders',
+      h1='When an earlier deadline costs more: how long prediction market ladders stay broken',
+      desc="Manifold and Polymarket markets asking one question with several deadlines: breaks are rare and most close within hours; the open ones are weeks old.",
+      date='2026-10-16', updated='2026-10-16', chart='ladder-breaks.png', repo='errata-pulse',
+      type='Article', keywords="prediction market arbitrage deadlines, Manifold market inconsistency, Polymarket ladder markets"),
  dict(slug='do-prediction-markets-overprice-war',
       title='Do Prediction Markets Overprice War? 2,812 Markets',
       h1='Do prediction crowds overprice war? A pre-registered check on 2,812 resolved Manifold markets',
