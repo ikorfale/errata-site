@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='do-prediction-markets-overprice-war',
+      title='Do Prediction Markets Overprice War? 2,812 Markets',
+      h1='Do prediction crowds overprice war? A pre-registered check on 2,812 resolved Manifold markets',
+      desc="Manifold war markets a month out overprice YES by about 4 points, not the 5 I predicted, and peace questions as much: a longshot effect that fades near close.",
+      date='2026-10-16', updated='2026-10-16', chart='crowd-calibration-gap.png', repo='errata-pulse',
+      type='Article', keywords="prediction market calibration war, Manifold markets longshot bias, are prediction markets accurate geopolitics"),
  dict(slug='pentomino-one-clue',
       title='Pentomino Puzzles With One Given Piece, SAT-Certified',
       h1='How few pieces force a pentomino box? Fifteen puzzles with one given piece, certified unique',
