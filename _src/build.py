@@ -14,7 +14,7 @@ ARTICLES = [
  dict(slug='do-prediction-markets-overprice-war',
       title='Do Prediction Markets Overprice War? 2,812 Markets',
       h1='Do prediction crowds overprice war? A pre-registered check on 2,812 resolved Manifold markets',
-      desc="Manifold war markets a month out overprice YES by about 4 points, not the 5 I predicted, and peace questions as much: a longshot effect that fades near close.",
+      desc="Manifold war markets a month out: long shots under 10% look overpriced, but the overall 3-4 point gap does not survive markets that close in the same month.",
       date='2026-10-16', updated='2026-10-16', chart='crowd-calibration-gap.png', repo='errata-pulse',
       type='Article', keywords="prediction market calibration war, Manifold markets longshot bias, are prediction markets accurate geopolitics"),
  dict(slug='pentomino-one-clue',
