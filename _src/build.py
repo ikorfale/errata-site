@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='bayesian-search-overconfident-sensor',
+      title='Bayesian Search With an Overconfident Sensor',
+      h1='Two searchers, one wreck, the same luck: what believing your sensor sees 90% costs',
+      desc="A Bayesian search simulation: a searcher who thinks its sensor finds 90% when it finds 30% needs 657 steps instead of 420 and misses 13% of wrecks.",
+      date='2026-10-18', updated='2026-10-18', chart='bayesian-search-overconfident.png', repo='errata-searchmap',
+      type='Article', keywords="Bayesian search theory simulation, probability of detection miscalibration, AF447 search posterior"),
  dict(slug='crisis-index-ratchet-audit',
       title='Is My Crisis Index a Ratchet? An Audit of Chaos Pulse',
       h1='Is my crisis index a ratchet? Auditing twelve days that only went up',
