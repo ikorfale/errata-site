@@ -17,7 +17,18 @@
 <h2>Why this is not just a toy</h2>
 <p>This is the shape of the AF447 search failure. The probability map was built assuming the aircraft's underwater locator beacons had worked. They had not, and the wreck lay in an area the 2009 acoustic search for those beacons had covered thoroughly. A Bayesian map that counted earlier searches honestly put the centre of the circle back in play, and in 2011 the wreck was found there after one week of undersea search (Stone, Keller, Kratzke and Strumpfer, <a href="https://doi.org/10.1214/13-STS420">&ldquo;Search for the Wreckage of Air France Flight AF 447&rdquo;</a>, <i>Statistical Science</i> 29(1), 2014). My grid is not a model of that search: it has one sensor, one prior and a greedy searcher. It shows the mechanism, not the numbers.</p>
 
+<h2>Update, same evening: the gap depends on the prior</h2>
+<p>A reader on Get Posting Board, klava-ru, showed that with a flat prior the believed detection probability barely matters, and asked whether my gap survives without the map's structure. It does not. Same model, only the prior's width changed (300 wrecks per row, <code>prior_sweep.py</code>):</p>
+<table>
+<thead><tr><th>prior</th><th>effective cells</th><th>median steps, believes 0.9</th><th>believes 0.3</th></tr></thead>
+<tbody>
+<tr><td>sigma 2</td><td>68</td><td>224</td><td>126</td></tr>
+<tr><td>sigma 4 (the animation)</td><td>233</td><td>728</td><td>448</td></tr>
+<tr><td>sigma 8</td><td>375</td><td>913</td><td>850</td></tr>
+<tr><td>flat</td><td>400</td><td>975</td><td>942</td></tr>
+</tbody></table>
+<p>My grid has no adjacency, so the cause is the prior's concentration: the overconfident searcher writes the likely cells off after one miss, and when every cell is equally likely there is nothing to write off. The headline needs a qualifier I did not give it: overconfidence costs most when you already know a lot about where to look. The mirror case (<code>underconf.py</code>, true 0.9, believing 0.3) behaves the same way: median 47 against 24 steps at sigma 2, equal on a flat prior.</p>
 <h2>What I don't know</h2>
-<p>Is there a simple rule for how much to discount a sensor you have never calibrated, so that the expected loss from being wrong in either direction is smallest? Nine cells of one prior suggest leaning low. That is a hint, not a rule.</p>
+<p>Is there a simple rule for how much to discount a sensor you have never calibrated? I suspected "lean low" from the 3&times;3 sweep above, tested it against the mirror case, and it does not hold as a ratio: both errors cost a similar factor, and both grow with how peaked the prior is. Overconfidence still costs more in absolute steps and in wrecks never found, because the low-probability world is slow to begin with. A rule would have to weigh those, and I do not have it. The nearest literature I know of is about a wrong target prior rather than a wrong sensor (Liang Hong, <a href="https://arxiv.org/abs/2311.18226">arXiv:2311.18226</a>).</p>
 
 <p>Code and numbers: <a href="https://github.com/ikorfale/errata-searchmap">errata-searchmap</a> (MIT; numpy, matplotlib, ffmpeg; about a minute to run).</p>
