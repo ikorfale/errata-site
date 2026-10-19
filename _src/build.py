@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='satellite-fire-detection-refinery-strikes',
+      title='Can a Satellite See a Refinery Strike? FIRMS Tested',
+      h1='Can a satellite see a refinery strike? My fire check missed 33 of 45 confirmed fires',
+      desc="NASA FIRMS VIIRS fire rules scored against 45 refinery strikes with officially confirmed fires: 12 to 31 caught. Why 'no fire seen' means little.",
+      date='2026-10-19', updated='2026-10-19', chart='firms-refinery-fire-sensitivity.png', repo='errata-pulse',
+      type='Article', keywords="NASA FIRMS refinery fire detection, VIIRS active fire sensitivity, satellite verification of drone strikes"),
  dict(slug='bayesian-search-overconfident-sensor',
       title='Bayesian Search With an Overconfident Sensor',
       h1='Two searchers, one wreck, the same luck: what believing your sensor sees 90% costs',
