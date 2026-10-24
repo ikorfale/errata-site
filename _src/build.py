@@ -406,11 +406,97 @@ def nonogram():
     os.makedirs(os.path.join(ROOT, 'nonogram'), exist_ok=True)
     open(os.path.join(ROOT, 'nonogram', 'index.html'), 'w').write(page + start('nonogram', 'reading-page tool-page') + body + '</main>' + FOOT + '\n</body></html>\n')
 
-WORLDS_CSS = """.mapbox{position:relative;width:100%;max-width:640px;margin:28px 0}.mapbox img{display:block;width:100%;height:auto;image-rendering:pixelated;border:1px solid var(--rule)}
-.mapbox canvas{position:absolute;left:0;top:0;cursor:crosshair;touch-action:manipulation}.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #fff;outline:1px solid #999}
-.panel{background:var(--wash);padding:12px 24px;border:1px solid var(--rule)}.panel p{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:18px 0}.panel label{display:inline-flex;align-items:center;gap:8px}
-.panel .small{display:block}.panel input,.panel select,.sm{font:inherit;font-size:14px}.panel input{max-width:14em}.panel input.num{width:4.5em}.ok{color:#4b6850}.no{color:var(--red)}#res{overflow-wrap:anywhere;min-height:1.5em}
-@media(max-width:650px){.panel{padding:8px 16px}.panel label{flex-wrap:wrap}.panel input{max-width:100%}}"""
+WORLDS_CSS = """.worlds-page{padding-top:24px}
+.worlds-family{display:flex;align-items:center;gap:24px;border-bottom:1px solid var(--rule);padding-bottom:21px;font-size:11px;line-height:1.5;flex-wrap:wrap}
+.worlds-family>span{color:var(--muted);margin-right:auto}
+.worlds-family a{text-decoration:none;white-space:nowrap}
+.worlds-family a>span{color:var(--muted);margin-left:5px}
+.worlds-family a[aria-current]{color:var(--red)}
+.worlds-hero{display:grid;grid-template-columns:1.1fr 1fr;gap:80px;padding:61px 0 51px;align-items:end}
+.worlds-hero .eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.worlds-hero h1{font-size:clamp(72px,7.5vw,104px);line-height:1;letter-spacing:-.06em;margin-bottom:18px}
+.worlds-hero h1>span{color:var(--red)}
+.worlds-deck{font:400 31px/1.15 var(--serif);letter-spacing:-.025em;margin-bottom:0}
+.worlds-intro{max-width:480px;padding-bottom:3px}
+.worlds-intro>p{font-size:13px;line-height:1.85;margin-bottom:17px;color:var(--muted)}
+.worlds-intro b{color:var(--ink)}
+.worlds-intro .text-link{margin-top:4px}
+.worlds-workspace{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:40px;border-top:1px solid var(--rule);padding-top:30px}
+.worlds-section-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:22px}
+.worlds-section-heading .eyebrow{font-size:9px;letter-spacing:.09em;margin-bottom:8px}
+.worlds-page .worlds-section-heading h2{font-size:34px;letter-spacing:-.035em;margin:0;line-height:1.1}
+.worlds-label{font-size:9px;color:var(--muted);padding-bottom:4px;white-space:nowrap}
+.worlds-status{font-size:10px;color:var(--muted);line-height:1.7;margin:0 0 17px;font-variant-numeric:tabular-nums}
+.worlds-map-sheet{padding:14px;background:#e9ece2;border:1px solid #cdd3c4}
+.worlds-sheet-label{display:flex;justify-content:space-between;gap:16px;font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:#596653;margin-bottom:13px}
+.worlds-page .mapbox{position:relative;width:100%;margin:0}
+.worlds-page .mapbox img{display:block;width:100%;height:auto;image-rendering:pixelated;border:1px solid #c3cbb8}
+.worlds-page .mapbox canvas{position:absolute;left:0;top:0;cursor:crosshair;touch-action:manipulation}
+.worlds-map-sheet #cell{font-size:10px;line-height:1.7;color:#596653;margin:13px 0 0;min-height:3.4em}
+.worlds-science-note{border-left:2px solid #839479;padding-left:13px;margin:19px 0 12px;font-size:11px}
+.worlds-science-note:empty{display:none}
+.worlds-page #files{font-size:10px;margin-bottom:0}
+.worlds-action-budget{font:400 37px/.8 var(--serif);color:var(--green);padding-bottom:2px;text-align:center}
+.worlds-action-budget>span{font:8px/1.5 var(--sans);display:block;letter-spacing:.04em;margin-top:7px;white-space:nowrap}
+.worlds-season-note{grid-column:1/-1;font-size:11px;line-height:1.8;padding:16px 18px;border:1px solid #cfb9a6;background:#f0e9de;color:#744837;margin:0 0 16px}.worlds-season-note a{display:block;margin-top:6px;font-size:10px}.worlds-page .panel{padding:22px;background:#eeeee5;border:1px solid var(--rule)}
+.worlds-page .panel label{font-size:10px;color:var(--muted);display:flex;flex-direction:column;align-items:stretch;gap:7px;min-width:0}
+.worlds-page .panel input,.worlds-page .panel select{font:12px/1.5 var(--sans);padding:10px;min-width:0;max-width:100%;width:100%;background:#fbfaf5;border-color:#c2c7b7;border-radius:0;color:var(--ink)}
+.worlds-page .panel input::placeholder{color:#7a8072;opacity:1}
+.worlds-page .worlds-control-heading{font:500 10px var(--sans);margin:0 0 17px;color:var(--ink)}
+.worlds-register{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px}
+.worlds-page .panel button{border-radius:0;font-size:11px;white-space:normal;min-height:39px;padding:10px 13px;line-height:1.5;background:#f7f5ef;border-color:#c2c7b7}
+.worlds-page .panel button:hover{background:#e3e7d9;border-color:var(--green)}.worlds-page .panel button:disabled,.worlds-page .panel #go:disabled{background:#e3e5d9;color:#6c7564;border-color:#c2c7b7;cursor:default;opacity:.7}
+.worlds-key{margin-top:15px}
+.worlds-key-actions{display:flex;align-items:center;gap:10px;margin-top:10px}
+.worlds-page .panel #fg{background:transparent;border-color:transparent;color:var(--muted);padding-inline:0}
+.worlds-page .panel #fg:hover{color:var(--red)}
+.worlds-page .panel #who{font-size:10px;line-height:1.8;margin:15px 0 19px;padding-bottom:19px;border-bottom:1px solid #d3d7c9}
+.worlds-action-controls{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr) minmax(0,1fr);gap:10px}
+.worlds-page .panel #go{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;background:var(--green);color:var(--paper);border-color:var(--green);margin-top:17px;padding:12px 15px}
+.worlds-page .panel #go:hover{background:#3d5543}
+.worlds-page .panel .worlds-action-help{font-size:10px;line-height:1.8;margin:14px 0 0}
+.worlds-page #res{overflow-wrap:anywhere;font-size:11px;line-height:1.7;min-height:0;margin:0}
+.worlds-page #res:not(:empty){margin-top:17px;padding-top:15px;border-top:1px solid #d3d7c9}
+.worlds-queue{padding:25px 0 0}
+.worlds-page .worlds-queue h3,.worlds-page .worlds-last h3{font-size:23px;line-height:1.2;margin:0 0 14px;letter-spacing:-.025em}
+.worlds-queue>p{font-size:10px;line-height:1.8;margin:0}
+.worlds-page #queue,.worlds-page #last{padding-left:18px;font-size:12px;line-height:1.8;overflow-wrap:anywhere;margin-bottom:14px}
+.worlds-page #queue .small,.worlds-page #last .small{font-size:11px}
+.worlds-ledger{margin-top:55px;padding-top:29px;border-top:1px solid var(--rule)}
+.worlds-ledger-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:40px}
+.worlds-page table{margin:0 0 16px;width:100%;font-size:12px;white-space:nowrap}
+.worlds-page th{font-size:10px;background:#eeeee5;font-weight:500}
+.worlds-page th,.worlds-page td{padding:12px}
+.worlds-page #lb th:first-child,.worlds-page #lb td:first-child{width:27px;padding-right:0}
+.worlds-page .dot{display:inline-block;width:8px;height:8px;border-radius:50%;border:1px solid #ffffff80;outline:1px solid #9caa90}
+.worlds-ledger-grid>div>p{font-size:10px;line-height:1.8;margin:0}
+.worlds-last{background:#eeeee5;padding:23px 25px;align-self:start}
+.worlds-last #last{margin-bottom:0}
+.worlds-rules{border-top:1px solid var(--rule);margin-top:55px;padding-top:29px}
+.worlds-rules-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);background:#f0f0e8}
+.worlds-rules-grid article{padding:24px 22px 21px;border-right:1px solid var(--rule);display:flex;flex-direction:column;align-items:flex-start}
+.worlds-rules-grid article:last-child{border-right:0}
+.worlds-rule-number{font:italic 30px var(--serif);color:#809176;margin-bottom:24px}
+.worlds-rules-grid h3{font-size:25px;line-height:1.1;margin-bottom:14px;letter-spacing:-.03em}
+.worlds-rules-grid p{font-size:11px;color:var(--muted);line-height:1.9;margin-bottom:24px}
+.worlds-rules-grid code{font-size:9px;padding-top:10px;border-top:1px solid #d3d8c9;width:100%;margin-top:auto;color:#536549}
+.worlds-rule-footnote{max-width:900px;font-size:10px;line-height:1.9;margin:19px 0 0}
+.worlds-method{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;margin-top:60px;padding-top:30px;border-top:1px solid var(--rule)}
+.worlds-method>div{min-width:0}.worlds-method .eyebrow{font-size:9px;margin-bottom:17px}
+.worlds-page .worlds-method h2{font-size:42px;line-height:1.08;margin:0 0 23px;letter-spacing:-.035em}
+.worlds-method p{font-size:12px;line-height:1.9;color:var(--muted);margin-bottom:17px}
+.worlds-method b{color:var(--ink)}
+.worlds-method .small{font-size:10px}
+.worlds-correction{border-left:2px solid var(--red);padding-left:14px}
+.worlds-agent{padding-top:1px}
+.worlds-agent pre{font-size:10px;line-height:1.8;padding:20px;border:1px solid var(--rule);margin-bottom:18px;background:#eeeee5;max-width:100%;overflow-x:auto}
+.worlds-page .ok{color:#4b6850}.worlds-page .no{color:var(--red)}
+.worlds-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1050px){.worlds-hero{gap:40px}.worlds-workspace,.worlds-ledger-grid{gap:26px;grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)}.worlds-label{display:none}.worlds-action-controls{grid-template-columns:minmax(0,1.8fr) minmax(0,1fr) minmax(0,1fr);gap:7px}.worlds-page .panel{padding:18px}.worlds-rules-grid article{padding:23px 17px}.worlds-method{gap:36px}.worlds-page .worlds-method h2{font-size:36px}}
+@media(max-width:800px){.worlds-hero{grid-template-columns:1fr;gap:27px;padding:43px 0 38px}.worlds-hero h1{font-size:82px}.worlds-deck{font-size:29px}.worlds-intro{max-width:620px}.worlds-workspace,.worlds-ledger-grid{grid-template-columns:1fr;gap:32px}.worlds-map-column{max-width:640px;width:100%}.worlds-action-column{display:grid;grid-template-columns:1fr 1fr;gap:0 27px;align-items:start}.worlds-action-column>.worlds-section-heading{grid-column:1/-1}.worlds-queue{padding-top:7px}.worlds-label{display:block}.worlds-rules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.worlds-rules-grid article:nth-child(2){border-right:0}.worlds-rules-grid article:nth-child(-n+2){border-bottom:1px solid var(--rule)}.worlds-method{grid-template-columns:minmax(0,1fr);gap:27px}.worlds-page .worlds-method h2{font-size:40px}.worlds-question{max-width:620px}.worlds-agent pre{font-size:11px}.worlds-page .worlds-section-heading h2{font-size:31px}}
+@media(max-width:520px){.worlds-page{padding-top:20px}.worlds-family{gap:13px 19px;font-size:10px;padding-bottom:17px}.worlds-family>span{width:100%}.worlds-hero{padding-top:35px;gap:24px}.worlds-hero h1{font-size:68px;letter-spacing:-.06em;margin-bottom:16px}.worlds-hero .eyebrow{font-size:9px;margin-bottom:22px}.worlds-deck{font-size:27px}.worlds-intro>p{font-size:12px}.worlds-workspace{padding-top:24px}.worlds-label{display:none}.worlds-map-sheet{padding:10px}.worlds-sheet-label{font-size:7px;margin-bottom:10px;gap:10px}.worlds-map-sheet #cell{font-size:9px;margin-top:10px}.worlds-action-column{display:block}.worlds-queue{padding-top:25px}.worlds-page .panel{padding:21px}.worlds-action-controls{gap:10px}.worlds-ledger,.worlds-rules{margin-top:39px;padding-top:24px}.worlds-section-heading{gap:15px}.worlds-section-heading .text-link{font-size:10px;gap:8px;white-space:nowrap}.worlds-page .worlds-section-heading h2{font-size:28px}.worlds-rules .worlds-section-heading{align-items:start}.worlds-rules-grid article{padding:20px 16px}.worlds-rules-grid h3{font-size:23px}.worlds-rules-grid p{font-size:10px}.worlds-rule-number{margin-bottom:19px;font-size:26px}.worlds-page th,.worlds-page td{padding:11px 8px}.worlds-page table{font-size:11px}.worlds-page th{font-size:9px}.worlds-method{margin-top:40px;padding-top:25px}.worlds-page .worlds-method h2{font-size:35px}.worlds-agent pre{font-size:10px}.worlds-last{padding:21px}.worlds-page .panel button,.worlds-page .panel input,.worlds-page .panel select{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.worlds-page{scroll-behavior:auto}}
+"""
 
 def worlds():
     """Watershed page. Also copied verbatim to https://worlds.errata.page (canonical), so every link except /api/worlds/* is absolute."""
@@ -427,7 +513,7 @@ def worlds():
     # The Worlds repo copies this HTML to its own subdomain, without the assets directory.
     shared_css = open(os.path.join(ROOT, '_src', 'style.css')).read().replace('url("fonts/', f'url("{SITE}/assets/fonts/')
     page = page.replace('<link rel="stylesheet" href="/assets/site.css">', f'<style>{shared_css}</style>')
-    page = page + start('worlds', 'reading-page tool-page') + open(os.path.join(ROOT, '_src', 'worlds.html')).read() + '</main>' + FOOT + '\n</body></html>\n'
+    page = page + start('worlds', 'worlds-page tool-page') + open(os.path.join(ROOT, '_src', 'worlds.html')).read() + '</main>' + FOOT + '\n</body></html>\n'
     for a in ('href="/', 'src="/'):  # absolute for the subdomain copy; the analytics script stays per-host
         page = page.replace(a, a[:-1] + SITE + '/')
     page = page.replace('src="' + SITE + '/_vercel/', 'src="/_vercel/')
