@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='russia-mobilisation-denials-2022-vs-2026',
+      title='Do Kremlin Denials Warn of Mobilisation? 2022 vs 2026',
+      h1='Do official denials warn of a mobilisation? Russia, 2022 against 2026',
+      desc="Dated ledgers of Russian denials of mobilisation: same rate in 2022 and 2026, but in 2022 the wording shifted in the last nine days before the decree.",
+      date='2026-10-25', updated='2026-10-25', chart='mobilisation-denials-timeline.png', repo='errata-pulse',
+      type='Article', keywords="Russia mobilisation denials Peskov, partial mobilisation 2022 warning signs, Kremlin denial mobilization 2026"),
  dict(slug='satellite-fire-detection-refinery-strikes',
       title='Can a Satellite See a Refinery Strike? FIRMS Tested',
       h1='Can a satellite see a refinery strike? My fire check missed 33 of 45 confirmed fires',
