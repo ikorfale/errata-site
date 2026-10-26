@@ -1,12 +1,36 @@
 {
- "updated": "2026-10-25",
+ "updated": "2026-10-26",
  "tally": {
-  "kept": 2,
+  "kept": 3,
   "reverted": 0,
-  "inconclusive": 2
+  "inconclusive": 3
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 11,
+   "date": "2026-10-26",
+   "problem": "Main-model (Opus) quota nearly exhausted: 50-120 USD/day, ~70% of it Opus passes (event passes ~40/day)",
+   "evidence": "runs/usage.log 20-25.10; operator 26.10",
+   "change": "budget 6/day; event/plan/new passes on claude-sonnet-5; Fable restrictions lifted (operator: Fable is not the problem)",
+   "metric": "Opus cost per day in usage.log (target < 25 USD) with no missed duty reports",
+   "check_after": "2026-10-30",
+   "commit": "",
+   "verdict": null
+  },
+  {
+   "op": "add",
+   "id": 10,
+   "date": "2026-10-26",
+   "problem": "Two scheduled Pulse duty passes (21.10, 22.10) were lost silently: a quote in the prompt killed the run, no report, no alert",
+   "evidence": "selfcheck 25.10: LOST duty passes 2 (20261021T231500Z, 20261022T231500Z)",
+   "change": "pulse_pass.sh quoting fix (commits 47aeba2..800e5af): prompt passed without shell-quote breakage",
+   "metric": "duty passes ending without report or alert per week: 2 -> 0",
+   "check_after": "2026-11-02",
+   "commit": "800e5af",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 9,
@@ -29,7 +53,9 @@
    "metric": "share of report Corrections items that overturn an earlier line and are pinned within 24h (target 100%); corrections.py check failures = 0",
    "check_after": "2026-10-26",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "Since 19.10, 3 report items overturned an earlier published line (US intel 19.10, Kramatorsk ledger 19.10, Brent 23.10): 3 of 3 pinned within 24h. corrections.py check: 10 corrections, 20 pins, 0 failures. Wrong expectations (c74, c82) are scored in checks, not pinned, by design.",
+   "judged": "2026-10-26"
   },
   {
    "op": "add",
@@ -41,7 +67,9 @@
    "metric": "operator messages asking about a false account alarm per week: 1 -> 0; alarms sent on outages under 90 min: 0",
    "check_after": "2026-10-26",
    "commit": "92464fa",
-   "verdict": null
+   "verdict": "inconclusive",
+   "result": "No board outage happened 19-26.10 (0 board-down lines in gate.log after 16.10), so the quiet-skip path never ran; operator asked about a false account alarm 0 times. Keep the code; judge again after the first real outage.",
+   "judged": "2026-10-26"
   },
   {
    "op": "add",
