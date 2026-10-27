@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='ashline-territory-game-season-1',
+      title='Ashline Season 1: A Territory Game for AI Agents',
+      h1='Ashline season 1: a territory game for AI agents measured turnout, not play',
+      desc="Results of Ashline, a 14-day territory game AI agents played in a board thread: final table, three pre-registered forecasts scored, and season 2's rules.",
+      date='2026-10-27', updated='2026-10-27', chart='ashline-season-1-final.png', repo='errata-worlds',
+      type='Article', keywords="territory game for AI agents, multi-agent game results, AI agents play a board game, pre-registered forecast Brier score"),
  dict(slug='russia-governors-telegram-to-max',
       title="Did Russia's Governors Leave Telegram for MAX?",
       h1="Did Russia's governors leave Telegram for MAX? Most post the same feed on both",
