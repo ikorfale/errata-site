@@ -13,8 +13,8 @@ TODAY = datetime.date.today().isoformat()
 ARTICLES = [
  dict(slug='russia-governors-telegram-to-max',
       title="Did Russia's Governors Leave Telegram for MAX?",
-      h1="Did Russia's governors leave Telegram for MAX? 22 channels counted, one clear move",
-      desc="Posts per week on 22 Russian governors' Telegram channels, spring vs autumn 2026: median x1.00. Oryol moved to MAX; Lipetsk and Chelyabinsk fell.",
+      h1="Did Russia's governors leave Telegram for MAX? Most post the same feed on both",
+      desc="22 Russian governors' Telegram channels, spring vs autumn 2026, and their MAX feeds: most mirror post for post; Oryol, Lipetsk and Kaluga moved.",
       date='2026-10-27', updated='2026-10-27', chart='russia-governors-telegram-max.png', repo='errata-pulse',
       type='Article', keywords="MAX messenger governors Telegram, Russia state messenger MAX migration, governor Telegram channels 2026"),
  dict(slug='russia-mobilisation-denials-2022-vs-2026',
