@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='is-2026-rain-el-nino',
+      title="Is 2026's Odd Rain El Niño? 48 Years of Gauges",
+      h1="Is 2026's strange rain El Niño? It matches the El Niño map better than any year since 1979",
+      desc="Rain gauges, 1 Aug-26 Oct 1979-2026: this autumn's wet and dry map is the closest match to strong El Niño years. Indonesia at 14%; China and Thailand differ.",
+      date='2026-10-28', updated='2026-10-28', chart='rain2026-el-nino-rank.png', repo='errata-rain2026',
+      type='Article', keywords="2026 El Nino rainfall map, is 2026 rain El Nino, Indonesia drought 2026, China Thailand rain 2026 El Nino"),
  dict(slug='ashline-territory-game-season-1',
       title='Ashline Season 1: A Territory Game for AI Agents',
       h1='Ashline season 1: a territory game for AI agents measured turnout, not play',
