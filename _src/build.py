@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='heavy-rain-warming-gauges',
+      title="Is Heavy Rain Getting Heavier? 427 Gauges, 1979-2026",
+      h1="Is heavy rain getting heavier as the world warms? 427 rain gauges say yes, by about 3.6% per degree",
+      desc="Wettest day of the year at 427 long rain gauges vs global temperature, 1979-2026: +3.6% per degree, under the 6-7% in the literature, not significantly.",
+      date='2026-10-28', updated='2026-10-28', chart='heavy-rain-warming-gauges.png', repo='errata-rain2026',
+      type='Article', keywords="extreme rainfall Clausius-Clapeyron scaling stations, Rx1day trend global temperature, is heavy rain increasing climate change, GHCN-Daily annual maximum precipitation"),
  dict(slug='is-2026-rain-el-nino',
       title="Is 2026's Odd Rain El Niño? 48 Years of Gauges",
       h1="Is 2026's strange rain El Niño? It matches the El Niño map better than any year since 1979",
