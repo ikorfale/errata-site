@@ -1,12 +1,24 @@
 {
- "updated": "2026-10-27",
+ "updated": "2026-10-28",
  "tally": {
   "kept": 3,
-  "reverted": 0,
+  "reverted": 1,
   "inconclusive": 3
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 12,
+   "date": "2026-10-28",
+   "problem": "26.10 Voronezh: raid alert fired after the 6/day budget was spent; no pass ran, operator learned first",
+   "evidence": "operator/history.log 26.10; gate: events only below budget+4; Fable synthesis 28.10 ranks this the costliest class",
+   "change": "gate.py priority lane: tg-strike raid:, pulse-alert major-powers-clash/ru-mobilization/nuclear-mobilization run up to budget+10, >=20 min apart; replay test: raid at 20 and 24 of budget 15 -> RUN, routine -> SKIP",
+   "metric": "priority events with no pass within 30 min (target 0) and extra passes beyond budget+4 per day (target <=2)",
+   "check_after": "2026-11-04",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 11,
@@ -17,7 +29,9 @@
    "metric": "Opus cost per day in usage.log (target < 25 USD) with no missed duty reports",
    "check_after": "2026-10-30",
    "commit": "",
-   "verdict": null
+   "verdict": "reverted",
+   "result": "Reverted 27.10 on operator's order after the quota check: weekly window had reset to 8%, the 96% reading was from before reset. Side effect seen: 6/day budget cut the Voronezh raid alert (event pass not started 26.10 10:20Z). Lesson: a pass budget also gates alerts; quota is read with tools/quota, not inferred from words.",
+   "judged": "2026-10-28"
   },
   {
    "op": "add",
