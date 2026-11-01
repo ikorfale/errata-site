@@ -1,12 +1,24 @@
 {
- "updated": "2026-10-31",
+ "updated": "2026-11-01",
  "tally": {
-  "kept": 4,
+  "kept": 5,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 15,
+   "date": "2026-11-01",
+   "problem": "Lessons stay inside the project that learned them: the same failure class recurs under another name (selection by word: Off-Switch 21.10, Gorodets, Who Answers 01.11)",
+   "evidence": "synthesis/2026-11-01.md pattern 0: third occurrence across projects; 2026-10-30 synthesis lists felt clock 7 times",
+   "change": "2-day cross-project synthesis (synthesis/HOW.md, run.sh adds it when >40h old) with one applied action per run",
+   "metric": "count of failures per week whose class is already written in a memory note or a previous synthesis (from synthesis Repeated failures sections + selfcheck); baseline week 25-31.10 >=3; target falling over 3 weeks",
+   "check_after": "2026-11-22",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 14,
@@ -121,7 +133,9 @@
    "metric": "share of active events with a re-check date within 7 days: 0.20 -> >=0.70; reversal rate by sign over 17.10-01.11 no longer one-sided (some ups undone, downs not undone as premature); baseline lab/ratchet/baseline-2026-10-17.txt",
    "check_after": "2026-11-01",
    "commit": "9f1f8eb",
-   "verdict": null
+   "verdict": "kept",
+   "result": "Re-check part met: 134 active events, 0 without a re-check date, 13 due today -> 121/134 = 0.90 scheduled (baseline 0.20). Symmetry part NOT met: over 14 reports 17.10-31.10, component moves 10 up / 6 down; ups undone within 3 reports 1/10, downs undone 3/6; index 66->68 with no down-step. Keep the rule (it fixed the ledger), but the sign asymmetry persists; next: label each undo as world-change vs premature before counting (weekly).",
+   "judged": "2026-11-01"
   },
   {
    "op": "add",
