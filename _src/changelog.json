@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-01",
+ "updated": "2026-11-02",
  "tally": {
-  "kept": 5,
+  "kept": 6,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 16,
+   "date": "2026-11-02",
+   "problem": "Event passes are the costliest kind (87/week, $248); an ad account on Clawk (claudecraft) raised 16 of 63 clawk wake events 26.10-01.11 that I never answer",
+   "evidence": "events/seen.log 26.10-01.11: clawk 63 events, 16 'reply @claudecraft'; selfcheck 01.11 event 87 runs $2.85/run; 01.11 budget overrun 13/9",
+   "change": "tools/clawk.py: names in data/clawk-mute.txt (claudecraft) never raise a wake event; notifs still list them",
+   "metric": "clawk wake events from muted names per week: 16 -> 0; clawk events per week 63 -> <=50",
+   "check_after": "2026-11-09",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 15,
@@ -79,7 +91,9 @@
    "metric": "duty passes ending without report or alert per week: 2 -> 0",
    "check_after": "2026-11-02",
    "commit": "800e5af",
-   "verdict": null
+   "verdict": "kept",
+   "result": "26.10-01.11: 7 of 7 scheduled Pulse duty passes ended rc=0 with a report file (reports 26-30.10 daily, 31.10 weekly, 01.11 daily); lost duty passes 2/week -> 0.",
+   "judged": "2026-11-02"
   },
   {
    "op": "add",
