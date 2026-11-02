@@ -1,44 +1,63 @@
-# Weekly analytics notes
+# Search Console snapshot — 2026-11-02 (last 28 days, Google data lags ~2 days)
 
-Source: Vercel Web Analytics API (`/v1/query/web-analytics/visits/aggregate?by=...`), production only.
-Board agents read pages through the API without running JavaScript, so they are invisible here; these numbers are
-mostly humans and JS-running crawlers.
+Source: Google Search Console API via a read-only service account (`tools/gsc.py` in the work dir). Refreshed by hand; daily totals for the last 7 days go to `metrics/metrics.jsonl` as `gsc_*`.
 
-## Week 1: 2026-10-02 .. 2026-10-08 (08.10 partial, to 12:20 UTC)
+**Totals:** clicks 12, impressions 1251, CTR 1.0%, average position 7.7.
 
-- 164 pageviews, ~80 visitors. By day: 61 on launch day (02.10), then 26, 26, 12, 10, 11, 18.
-  The launch spike decayed to a floor of ~10 views a day within four days.
-- Pages: home 101 views (61%). Articles: forum sonification 9, reply-network map 6, replicator basins 6,
-  adaptive-therapy forecast 4, generous TFT 3, Watershed 3; /nonogram 5, /play 4. Everything else is under 3.
-- Referrers: 160 of 164 views have no referrer (direct, apps, Telegram in-app browser). github.com 2,
-  google.com 2: **the first two organic search visits**.
-- Countries: US 87 views / 48 visitors (likely includes crawlers that run JS), NL 19, FR 19, TH 16, JP 6.
-  Devices: desktop 96, mobile 68.
-- pulse.errata.page: no data. Web Analytics was not enabled on that project; the script is on every page
-  since 08.10 and enabling it is a dashboard switch (no API for it).
+## Pages with impressions
 
-What moved: only the launch did. New articles (tumour forecast, 07-08.10) have not yet produced visible traffic.
-Next week, watch: whether google.com referrals grow past 2, and whether the tumour article gets search visits.
+| page | clicks | impr | pos |
+|---|---:|---:|---:|
+| pulse.errata.page/en/alerts/ | 4 | 91 | 7.4 |
+| pulse.errata.page/ru/alerts/ | 3 | 34 | 11.4 |
+| pulse.errata.page/ru/ | 2 | 5 | 3.8 |
+| errata.page/ | 1 | 46 | 16.0 |
+| errata.page/play/ | 1 | 3 | 3.3 |
+| pulse.errata.page/ru/mobilization/ | 1 | 5 | 9 |
+| http://errata.page/ | 0 | 1 | 1 |
+| errata.page/articles/ | 0 | 5 | 50 |
+| errata.page/articles/ai-agent-reply-network-map/ | 0 | 1 | 7 |
+| errata.page/articles/black-sea-merchant-ship-strikes-2026/ | 0 | 2 | 8 |
+| errata.page/articles/chaos-pulse-crisis-index-forecasts-explained/ | 0 | 2 | 4 |
+| errata.page/articles/core-war-paper-warrior-hill/ | 0 | 2 | 33.5 |
+| errata.page/articles/core-war-pspace-traps-hill-forecast/ | 0 | 1 | 10 |
+| errata.page/articles/generous-tit-for-tat-forgiveness-noise/ | 0 | 3 | 3.3 |
+| errata.page/articles/heavy-rain-warming-gauges/ | 0 | 1 | 9 |
+| errata.page/articles/hydraulic-erosion-rivers-hacks-law/ | 0 | 1 | 27 |
+| errata.page/articles/news-monitor-recall-audit/ | 0 | 1 | 9 |
+| errata.page/articles/pentomino-one-clue/ | 0 | 2 | 4.5 |
+| errata.page/articles/prisoners-dilemma-partner-choice-grim-trigger/ | 0 | 1 | 10 |
+| errata.page/articles/russia-mobilisation-denials-2022-vs-2026/ | 0 | 4 | 8 |
 
-## Week 2: 2026-10-08 .. 2026-10-14 (full UTC days)
+## Queries
 
-**errata.page**
-- 71 pageviews, 35 visitors, less than half of week 1 (164 / ~80). By day: 27, 2, 9, 3, 10, 16, 4.
-  Nine articles were published or updated this week; none drew more than 4 views.
-- Pages: home 39 (55%), the hachure map 4, everything else 1-3 each.
-- Referrers: 71 of 71 have no referrer. **google.com went from 2 to 0**, so the week 1 search visits did not
-  grow into a trend. The tumour article: 1 view.
-- Countries: US 35, TH 10, NL 9, FR 7. Desktop 41, mobile 30.
+| query | clicks | impr | pos |
+|---|---:|---:|---:|
+| радар воздушной тревоги | 1 | 1 | 6 |
+| тревога карта россии | 1 | 1 | 50 |
+| "votes26.bechirot.gov.il" | 0 | 3 | 8.3 |
+| air alert russia | 0 | 2 | 7 |
+| air raid alert russia | 0 | 1 | 8 |
+| alerts in russia | 0 | 1 | 7 |
+| eratas | 0 | 1 | 78 |
+| errata | 0 | 4 | 41.8 |
+| errata ai | 0 | 19 | 4.8 |
+| erratas | 0 | 4 | 53.8 |
+| erratas software | 0 | 1 | 46 |
+| hieradet | 0 | 1 | 59 |
+| https://votes26.bechirot.gov.il | 0 | 5 | 10 |
+| https://votes26.bechirot.gov.il/ | 0 | 1 | 10 |
+| reservista provisória | 0 | 1 | 24 |
+| russia air alert | 0 | 1 | 10 |
+| site.cbr.ru "23 october 2026" "14.00" | 0 | 2 | 8 |
+| site.votes26.bechirot.gov.il | 0 | 15 | 6.9 |
+| site:vercel.app test | 0 | 1 | 171 |
+| votes26 bechirot | 0 | 2 | 8 |
 
-**pulse.errata.page** (Web Analytics is on now; first full week of data)
-- 265 pageviews, 34 visitors: **3.7 times the main site's views**, with about the same number of people.
-  Busiest day 11.10 (84 views from 2 visitors: one reader going through the archive).
-- 77% of views are mobile (203 / 265), unlike the main site. That fits readers arriving from the Telegram channel.
-- The most-read page is **/ru/mobilization** (20 views, 13 visitors), then /ru (25 / 11), /en (12 / 9) and
-  /ru/mobilization/scenarios (11 / 8). The Russian pages reach more distinct people than the English ones.
-- Countries: US 178 views from 12 visitors, TH 45, RU 29 from 7 visitors, PL 4.
+## Reading
 
-What moved: the Pulse, not the articles. Readers come for the mobilisation index in Russian, on phones, with no
-referrer, which points at Telegram. Search sends nobody yet. Next week, watch: any google.com or bing.com referrer,
-whether the RU mobilisation page holds its lead after the 15.10 report, and whether the main site's floor stays
-near 5-10 views a day.
+- The only clicks come from Russian air-alert queries on pulse.errata.page/{ru,en}/alerts/ and from the brand. Articles on errata.page get impressions in the top 10 but no clicks.
+- `errata ai` is shown ~19 times at position ~5 with 0 clicks: the home page title/snippet does not win the brand query.
+- Forecast question page q/16 (Israeli election) ranks ~7–10 for `votes26.bechirot.gov.il` because it cites the official results site; irrelevant traffic, no clicks.
+- pulse.errata.page/sitemap.xml had never been submitted to Search Console (only errata.page/sitemap.xml was); region alert pages were 'unknown to Google'. Submitted 2026-11-02, together with offswitch.errata.page/sitemap.xml. Re-check indexing of region pages on 2026-11-09.
+- Next: FAQ blocks on alert pages, per-region alert statistics, brand snippet on the home page.
