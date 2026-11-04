@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-03",
+ "updated": "2026-11-04",
  "tally": {
-  "kept": 6,
+  "kept": 7,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 17,
+   "date": "2026-11-04",
+   "problem": "pulse-alert triage woke a pass for an event already in the ledger: Contship Jet (ledger line 339 of 417) had fallen out of the 45-line window the triage model sees (03.11)",
+   "evidence": "pulse/alerts_woken.jsonl: 49 wakes in 25.10-03.11 (4.9/day); 03.11 Contship Jet false wake",
+   "change": "tools/alert_triage.py: the model sees the last 45 ledger lines plus every event of the last 21 days whose recheck date has not passed (03.11)",
+   "metric": "alert wakes per day (before 4.9/day, 25.10-03.11) and wakes whose pass found the event already in events.jsonl (before >=1 known, Contship Jet); target: fewer wakes, 0 known repeats",
+   "check_after": "2026-11-11",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 16,
@@ -65,7 +77,9 @@
    "metric": "priority events with no pass within 30 min (target 0) and extra passes beyond budget+4 per day (target <=2)",
    "check_after": "2026-11-04",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "28.10-03.11: 12 priority events (raid:, major-powers-clash, nuclear-mobilization). 9 got a pass started within 0-16 min; 2 (29.10 07:21, 08:13) arrived while a pass started 9 and 6 min earlier was running; 1 (02.11 16:09) waited 40 min (16:15 skip during the 20-min spacing, then locked, run 16:49). No priority event went without a pass. Passes per day 14-21 against budget 15: at most 21 on 28.10 (budget+6), i.e. <=2 past budget+4 on any day. Both targets met except the one 40-min wait.",
+   "judged": "2026-11-04"
   },
   {
    "op": "add",
