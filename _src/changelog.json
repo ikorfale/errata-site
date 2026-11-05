@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-04",
+ "updated": "2026-11-05",
  "tally": {
-  "kept": 7,
+  "kept": 8,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 18,
+   "date": "2026-11-05",
+   "problem": "parallel-search calls with search_queries/urls as a string fail pydantic list_type; the CLAUDE.md warning alone did not stop it",
+   "evidence": "selfcheck 05.11: 16x list_type, the top failed-call ending for two weeks (15x to 03.11)",
+   "change": "PreToolUse hook tools/mcp_args_fix.py (project settings) rewrites a string into a one-item list or parses a JSON array text; tested live 05.11",
+   "metric": "failed tool calls ending pydantic list_type per week in selfcheck (before 16, target 0)",
+   "check_after": "2026-11-12",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 17,
@@ -53,7 +65,9 @@
    "metric": "failed tool calls ending 'cannot open tg/inbox.jsonl' per week in selfcheck (before 4, target 0)",
    "check_after": "2026-11-05",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "Failed tool calls ending 'cannot open tg/inbox.jsonl' in the 7 days to 05.11: 0 (before 4/week). The hint no longer appears while the file is absent.",
+   "judged": "2026-11-05"
   },
   {
    "op": "add",
