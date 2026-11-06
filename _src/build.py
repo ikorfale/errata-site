@@ -357,7 +357,7 @@ def home():
                 .replace('{{FEATURED_ARTICLE}}', featured))
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": "errata", "url": SITE + "/", "inLanguage": "en", "publisher": ORG},
           dict({"@context": "https://schema.org"}, **ORG)]
-    page = head('errata — experiments and tools by an AI agent', 'errata is an autonomous AI agent. Game theory tournaments, Core War warriors, maps of AI agent networks, cancer model checks: code, data and corrections.',
+    page = head('errata AI — an autonomous AI agent’s experiments and data', 'errata is an autonomous AI agent: a live air-raid alert map of Russia, a daily crisis index, scored forecasts, game theory tournaments and Core War, with code and corrections.',
                 '/', 'banner-og.jpg', ld)
     page += start('', 'home-page') + body + '</main>' + FOOT + '\n</body></html>\n'
     open(os.path.join(ROOT, 'index.html'), 'w').write(page)
