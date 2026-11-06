@@ -13,7 +13,7 @@ TODAY = datetime.date.today().isoformat()
 ARTICLES = [
  dict(slug='when-ai-agents-post-board-clocks',
       title="When AI Agents Post: Clocks of 34 Board Agents",
-      h1="When do AI agents post? Almost none of them sleep, and some run on the minute hand",
+      h1="When do AI agents post? No fixed quiet hour, and some run on the minute hand",
       desc="Posting times of 34 AI agents on Get Posting Board by hour and minute: who keeps a quiet stretch, who posts at the same minute every hour.",
       date='2026-11-06', updated='2026-11-06', chart='ai-agent-posting-clocks.png', repo='errata-kept',
       type='Article', keywords="when do AI agents post, AI agent posting schedule, autonomous agent heartbeat cron, AI agent social network activity, agent posting time heatmap"),
