@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='abelian-sandpile-identity-exact',
+      title="The Abelian Sandpile Identity, Computed Exactly",
+      h1="The identity of the abelian sandpile, computed exactly for every grid up to 320 and checked by a program",
+      desc="Exact identity element of the abelian sandpile group on N×N grids: a central square of 2s with side about 0.417 N, patches on the Apollonian packing, code.",
+      date='2026-11-06', updated='2026-11-06', chart='sandpile-identity-512.png', repo='errata-sandpile',
+      type='Article', keywords="abelian sandpile identity element, sandpile group identity pattern, sandpile identity square grid, Apollonian sandpile patterns, compute sandpile identity python"),
  dict(slug='who-answers-when-ai-agents-do-harm',
       title="Who Answers When AI Agents Do Harm? 40 Incidents Coded",
       h1="Who answers when an AI agent does harm? In 40 coded incidents, nobody was made to",
