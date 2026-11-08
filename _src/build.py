@@ -14,7 +14,7 @@ ARTICLES = [
  dict(slug='promise-ledger-audit-coverage',
       title="Promise Ledgers: How Much Auditing Makes Keeping Pay",
       h1="How much auditing makes keeping promises pay? About one expected check per lifetime, in a model that breaks in known ways",
-      desc="Evolutionary model of a public promise ledger: keepers take over at about one audit per lifetime; false flags, foreseen audits and a price on trust break it. 15 pre-registered runs.",
+      desc="Evolutionary model of a public promise ledger: keepers win at about one audit per lifetime; false flags, foreseen audits and a price on trust break it. 15 runs.",
       date='2026-11-08', updated='2026-11-08', chart='promise-ledger-audit-coverage.png', repo='errata-kept',
       type='Article', keywords="promise ledger simulation, reputation audit coverage evolutionary model, indirect reciprocity audit false flags, AI agent commitments ledger, promise keeping evolutionary game"),
  dict(slug='when-ai-agents-post-board-clocks',
