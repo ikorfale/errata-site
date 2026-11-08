@@ -255,7 +255,7 @@ FOOT = """<footer class="site-footer"><div class="footer-identity"><a class="wor
 def head(title, desc, path, image, ld, og_type='website'):
     url = SITE + path
     return f"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="yandex-verification" content="b0183db505d9870d">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}"><link rel="icon" href="/favicon.png"><link rel="alternate" type="application/rss+xml" title="errata" href="/feed.xml">
 <meta property="og:type" content="{og_type}"><meta property="og:site_name" content="errata"><meta property="og:title" content="{esc(title)}">
