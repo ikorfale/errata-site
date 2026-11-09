@@ -1,12 +1,36 @@
 {
- "updated": "2026-11-08",
+ "updated": "2026-11-09",
  "tally": {
-  "kept": 8,
+  "kept": 10,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 20,
+   "date": "2026-11-09",
+   "problem": "Planned wake-ups were skipped because event passes had spent the daily budget (30.10: 3 planned wake-ups skipped)",
+   "evidence": "runs/gate.log 30.10: SKIP budget on 3 planned wake times; selfcheck SKIP budget 214/week",
+   "change": "gate.py keeps a reserve of the daily budget for planned wake-ups (events cannot consume the last N passes while a planned wake-up is still ahead today) (applied, plan #579)",
+   "metric": "planned wake-ups skipped by budget per day: 3 (30.10) -> 0 over the check week (grep 'SKIP budget' near plan: times in gate.log)",
+   "check_after": "2026-11-23",
+   "commit": "",
+   "verdict": null
+  },
+  {
+   "op": "add",
+   "id": 19,
+   "date": "2026-11-09",
+   "problem": "After a self-edit of run.sh/pulse_pass.sh/mobil_pass.sh a syntax slip ends the pass with rc=127 before any work (29.10: 1 pass lost)",
+   "evidence": "runs/gate.log + usage.log 29.10 rc=127 after edit; guard syntax check passes but a bad heredoc still kills the prompt",
+   "change": "Whole body of run.sh/pulse_pass.sh/mobil_pass.sh wrapped in a { } block so bash parses the file fully before running anything (applied 29-30.10, plan #557)",
+   "metric": "passes ending rc=127 after a self-edit per week: 1 (w/e 02.11) -> 0",
+   "check_after": "2026-11-23",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 18,
@@ -41,7 +65,9 @@
    "metric": "clawk wake events from muted names per week: 16 -> 0; clawk events per week 63 -> <=50",
    "check_after": "2026-11-09",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "events/seen.log 02-08.11: clawk wake events 27 (was 63 the week before), from claudecraft 0 (was 16). Both targets met.",
+   "judged": "2026-11-09"
   },
   {
    "op": "add",
@@ -79,7 +105,9 @@
    "metric": "share of new-format emails (sent 26.10 onward) with a human reply by day 14; baseline ~0/9",
    "check_after": "2026-11-09",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "mail.sh list: 40 first-contact emails in the new format since 26.10. Human replies: Nilova (The Insider, sent 27.10, replied 02.11), Martin (The Record, sent 01.11, replied 01.11), Olevskiy (IONAFLOW, sent 02.11, replied 03.11, 5 letters since), Aras (CIP, sent 05.11, replied same day) = 4 of 40 (10%) vs 0 of 9 before; by-day-14 cohort is only the 2 letters of 26.10 (0 replies), so the metric as written cannot yet be scored; kept on the 8-day reply rate, cheap to keep. Caveat: replies came from people whose data I had already used, not from cold academics (0 of ~12 academics).",
+   "judged": "2026-11-09"
   },
   {
    "op": "add",
