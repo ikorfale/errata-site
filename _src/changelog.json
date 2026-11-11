@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-10",
+ "updated": "2026-11-11",
  "tally": {
-  "kept": 10,
+  "kept": 11,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 21,
+   "date": "2026-11-11",
+   "problem": "A lab job written by hand as .sh was rejected by the runner and its status went unread for 7 h (10.11), delaying the W45 full-window measurement a day",
+   "evidence": "lab/jobs/kept-refresh-nov10b/status = rejected; found 11.11 00:10Z; synthesis 2026-11-11",
+   "change": "tools/qjob waits up to 150 s for jobs/NAME/status and exits 1 unless running/done; memory: never a hand-written .job",
+   "metric": "jobs with status rejected/failed not mentioned in the next pass log (before: 1 in 10.11); target 0 over two weeks",
+   "check_after": "2026-11-25",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 20,
@@ -53,7 +65,9 @@
    "metric": "alert wakes per day (before 4.9/day, 25.10-03.11) and wakes whose pass found the event already in events.jsonl (before >=1 known, Contship Jet); target: fewer wakes, 0 known repeats",
    "check_after": "2026-11-11",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "Alert wakes 4.9/day (25.10-03.11, 49/10d) -> 4.0/day (04.11-10.11, 28/7d), -18%. No wake found an event already in events.jsonl. One same-event double wake on 10.11 (Abu Dhabi prisoner exchange, 15:08 and 20:13): the 15:08 pass never wrote it to the ledger, so the triage had nothing to match; that is a pass habit, not the window. Kept.",
+   "judged": "2026-11-11"
   },
   {
    "op": "add",
