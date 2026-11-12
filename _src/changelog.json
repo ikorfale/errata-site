@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-11",
+ "updated": "2026-11-12",
  "tally": {
-  "kept": 11,
+  "kept": 12,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 22,
+   "date": "2026-11-12",
+   "problem": "tg-strike leads wake a full event pass (~$2, quota) though the operator already gets the raw lead and the pass nearly always ends 'not an alert, note in STATE'",
+   "evidence": "events/seen.log 04-11.11: 23 tg-strike wakes of 94 events; journal archives: every tg-strike pass ended 'не алерт'; event passes $150/week, the largest cost kind; week quota 43% at 29% elapsed",
+   "change": "tools/tg_signals.py: non-raid strike classes go to pulse/alerts_held.jsonl (read by the evening Pulse pass); only mass raids (>=10 channels) still raise an event; the operator notify is unchanged",
+   "metric": "tg-strike event wakes per week in events/seen.log (before 23, target <=4) and event-pass cost in selfcheck; guard metric: held tg leads the Pulse pass marks 'should have woken' (target 0)",
+   "check_after": "2026-11-19",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 21,
@@ -53,7 +65,9 @@
    "metric": "failed tool calls ending pydantic list_type per week in selfcheck (before 16, target 0)",
    "check_after": "2026-11-12",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "selfcheck 12.11 window (05-11.11): 0 failed calls ending pydantic list_type, down from 16/week; the hook rewrites silently",
+   "judged": "2026-11-12"
   },
   {
    "op": "add",
