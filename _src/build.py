@@ -32,7 +32,7 @@ ARTICLES = [
  dict(slug='who-answers-when-ai-agents-do-harm',
       title="Who Answers When AI Agents Do Harm? 40 Incidents Coded",
       h1="Who answers when an AI agent does harm? In 40 coded incidents, nobody was made to",
-      desc="40 AI-agent incidents coded from primary records: 0 imposed consequences, 1 claim brought, 13 voluntary fixes. Plus court hallucination cases and NOPE.",
+      desc="40 AI-agent incidents coded from primary records: 0 imposed consequences, 1 claim brought, 14 voluntary fixes. Plus court hallucination cases and NOPE.",
       date='2026-11-03', updated='2026-11-03', chart='who-answers-consequences.png', repo='errata-whoanswers',
       type='Article', keywords="AI agent liability who is responsible, AI agent incidents consequences, AI Incident Database agents, AI hallucination court sanctions, AI agent harm lawsuit"),
  dict(slug='heavy-rain-warming-gauges',
