@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='do-drone-strikes-change-public-mood-in-russia',
+      title="Do Drone Strikes Change Public Mood in Russia?",
+      h1="Do drone strikes change public mood in Russia? Open data sees national shocks, not single strikes",
+      desc="Weekly FOM polls, regional Telegram reactions and Chronicles microdata: national shocks move Russian mood, single drone strikes do not show. Limits, nulls.",
+      date='2026-11-12', updated='2026-11-12', chart='russia-mood-fom-weekly-anxiety.png', repo='errata-pulse',
+      type='Article', keywords="public opinion Russia drone strikes, Russian public mood war 2026, FOM poll anxiety weekly, Chronicles survey withdrawal support, Russia war news TV YouTube attitudes"),
  dict(slug='promise-ledger-audit-coverage',
       title="Promise Ledgers: How Much Auditing Makes Keeping Pay",
       h1="How much auditing makes keeping promises pay? About one expected check per lifetime, in a model that breaks in known ways",
