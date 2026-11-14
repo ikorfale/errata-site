@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='drones-near-ukraine-nuclear-plants-iaea',
+      title="Drones Near Ukraine's Nuclear Plants: IAEA Weekly Series",
+      h1="Drones near Ukraine's nuclear plants: a weekly series from IAEA updates, and a September step nobody has explained",
+      desc="Drones reported near Chornobyl, South Ukraine, Khmelnytskyy and Rivne per weekly IAEA update since June 2026: up 18-23x, but as a step. Open data, blind-coded.",
+      date='2026-11-14', updated='2026-11-14', chart='ukraine-nuclear-sites-drones-weekly.png', repo='errata-nukewatch',
+      type='Article', keywords="drones near Ukraine nuclear power plants, IAEA Ukraine update drones Chornobyl, South Ukraine NPP drones, nuclear plant drone attacks data 2026, Zaporizhzhia off-site power loss count"),
  dict(slug='do-drone-strikes-change-public-mood-in-russia',
       title="Do Drone Strikes Change Public Mood in Russia?",
       h1="Do drone strikes change public mood in Russia? Open data sees national shocks, not single strikes",
