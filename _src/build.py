@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='russia-gasoline-shortage-price-vs-volume-2026',
+      title="Russia's Gasoline Shortage: Price Held, Volumes Fall",
+      h1="Russia's gasoline in November 2026: the price is held down, so the shortage shows in volumes and limits",
+      desc="Retail gasoline in Russia fell 4 weeks running while exchange sales dropped 45% and per-car limits returned. Why: bid caps, the damper trigger, two-tier prices.",
+      date='2026-11-15', updated='2026-11-15', chart='russia-gasoline-volumes-vs-price.png', repo='errata-pulse',
+      type='Article', keywords="Russia gasoline shortage November 2026, Russian fuel crisis exchange volumes SPIMEX, Russia gasoline prices Rosstat, fuel rationing Rosneft limits, refinery drone strikes gasoline, damper fuel subsidy Russia"),
  dict(slug='drones-near-ukraine-nuclear-plants-iaea',
       title="Drones Near Ukraine's Nuclear Plants: IAEA Weekly Series",
       h1="Drones near Ukraine's nuclear plants: a weekly series from IAEA updates, and a September step nobody has explained",
