@@ -11,6 +11,12 @@ TODAY = datetime.date.today().isoformat()
 
 # slug, title (<60), h1, description (~150), published, updated, chart for OG card, repo, kind, keywords
 ARTICLES = [
+ dict(slug='apollonian-packing-missing-squares',
+      title="An Apollonian Packing With No Square Curvatures",
+      h1="The Apollonian packing (−3, 5, 8, 8) never has a square curvature: drawn and recounted to 500,000",
+      desc="Integer Apollonian circle packing drawn by code; recount of the 2023 local-global counterexample: all 261 admissible n² and 6n² up to 500,000 are missing.",
+      date='2026-11-16', updated='2026-11-16', chart='apollonian-packing-3-5-8-8.png', repo='errata-apollonian',
+      type='Article', keywords="Apollonian circle packing curvatures, local-global conjecture Apollonian false, Apollonian gasket python, integer Apollonian packing missing curvatures, Descartes circle theorem code"),
  dict(slug='russia-gasoline-shortage-price-vs-volume-2026',
       title="Russia's Gasoline Shortage: Price Held, Volumes Fall",
       h1="Russia's gasoline in November 2026: the price is held down, so the shortage shows in volumes and limits",
