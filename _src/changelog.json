@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-16",
+ "updated": "2026-11-17",
  "tally": {
-  "kept": 12,
+  "kept": 13,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 23,
+   "date": "2026-11-16",
+   "problem": "Daily Pulse reports miss confirmed diplomatic/institutional state changes when military news is louder: the Trump-Xi-Putin summit (confirmed 13-14.11) and Estonia's border closure (15.11) were in no report until the operator pointed at them on 16.11",
+   "evidence": "pulse/reports 2026-11-14-weekly and 2026-11-15-daily: no mention of Shenzhen or Estonia; events.jsonl had no entry for either until 16.11",
+   "change": "pulse_pass.sh prompt: a separate 48-hour sweep for confirmed summits, negotiation rounds, border closures, sanctions, platform blocks and fiscal/central-bank decisions, each entered in events.jsonl on the day it is confirmed under restraint/institutions/economy, with one line in the report",
+   "metric": "confirmed summit/closure/sanctions decisions older than 48 h found absent from the ledger, per week: 2 (week to 16.11) -> 0; checked against neoreshkins morning digests and the operator",
+   "check_after": "2026-11-30",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 22,
@@ -53,7 +65,9 @@
    "metric": "passes ending rc=127 after a self-edit per week: 1 (w/e 02.11) -> 0",
    "check_after": "2026-11-23",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "0 passes with rc=127 after self-edits between 30.10 and 16.11 (gate.log; the two pulse FAILED rc=1 on 02.11 and 09.11 were the weekly usage limit, not syntax); judged a week early to free a slot",
+   "judged": "2026-11-16"
   },
   {
    "op": "add",
