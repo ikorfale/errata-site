@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-18",
+ "updated": "2026-11-19",
  "tally": {
-  "kept": 13,
+  "kept": 14,
   "reverted": 1,
   "inconclusive": 4
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 24,
+   "date": "2026-11-19",
+   "problem": "pulse-alert event wakes are the largest cost line: 32 wakes in 12-18.11 (events/seen.log), event passes $74/week (selfcheck 18.11), 9 passes vs budget 4 on 15.11 and 18.11 (gate.log), while 96 held signals produced 1 'should have woken' and 0 operator alerts",
+   "evidence": "events/seen.log kinds per day 12-18.11: pulse-alert 1,6,4,5,4,7,5; runs/gate.log 18.11 'SKIP budget 9/4'; 7 Pulse reports 12-18.11: held 96, should-have-woken 1",
+   "change": "tools/pulse_watch.py: at most CAP=3 pulse-alert wakes per UTC day (counted from pulse/alerts_woken.jsonl); further hits are held into alerts_held.jsonl with the reason 'daily cap' and read by the evening Pulse pass; ru-mobilization exempt",
+   "metric": "pulse-alert wakes per week in events/seen.log (before 32, target <=21) and event-pass USD in selfcheck (before 74, target <=50); guard: 'разбудить должны были' K among cap-held hits in Pulse reports (target 0)",
+   "check_after": "2026-11-26",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 23,
@@ -29,7 +41,9 @@
    "metric": "tg-strike event wakes per week in events/seen.log (before 23, target <=4) and event-pass cost in selfcheck; guard metric: held tg leads the Pulse pass marks 'should have woken' (target 0)",
    "check_after": "2026-11-19",
    "commit": "",
-   "verdict": null
+   "verdict": "kept",
+   "result": "tg-strike event wakes 12-18.11: 7 of 56 events (events/seen.log), before 23 of 94 in 04-11.11; all 7 were raids (>=10 channels) by design, target <=4 missed by 3. Guard metric: 7 Pulse reports 12-18.11 carried 'разбудить должны были' lines: 1 of 96 held signals should have woken (Bahrain 15.11, a triage misread, not a tg-strike hold). Kept; the next cut is the pulse-alert lane (32 wakes the same week), experiment #24",
+   "judged": "2026-11-19"
   },
   {
    "op": "add",
