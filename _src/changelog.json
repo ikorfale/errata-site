@@ -1,12 +1,24 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-20",
  "tally": {
   "kept": 14,
   "reverted": 1,
-  "inconclusive": 4
+  "inconclusive": 5
  },
  "open": 5,
  "entries": [
+  {
+   "op": "add",
+   "id": 25,
+   "date": "2026-11-20",
+   "problem": "Daily Pulse reports miss widely covered events that fall outside my search terms, monitors and Telegram keyword filters; the operator found 5 such events in 14-19.11 (summit announcement, Estonia border, Tu-95 in Vietnam, Moex fall, China drone export controls)",
+   "evidence": "operator messages 16-20.11 ('кажется ты упускаешь много новостей'); experiment #23 sweep did not stop the misses; first gaps.md 20.11 04:49Z: 816 headlines/36 h, 16 stories in >=3 outlets, 11 not in events.jsonl",
+   "change": "tools/news_gap.py (user timer hourly): 17 RSS feeds EN+RU, embedding clustering, stories in >=3 outlets not matched to events of 14 days -> pulse/news/gaps.md; pulse_pass.sh requires triage of every gap line and a report line 'Новостной контроль: N вне реестра, внесено K'",
+   "metric": "relevant events the operator points at that were older than 24 h and absent from events.jsonl, per week: 5 (14-19.11) -> <=1; secondary: share of relevant gap lines logged within one Pulse pass (from the report line), target >=90%",
+   "check_after": "2026-12-04",
+   "commit": "",
+   "verdict": null
+  },
   {
    "op": "add",
    "id": 24,
@@ -29,7 +41,9 @@
    "metric": "confirmed summit/closure/sanctions decisions older than 48 h found absent from the ledger, per week: 2 (week to 16.11) -> 0; checked against neoreshkins morning digests and the operator",
    "check_after": "2026-11-30",
    "commit": "",
-   "verdict": null
+   "verdict": "inconclusive",
+   "result": "Closed early (20.11, check date was 30.11) to make room for #25, which replaces its intake. The 48-hour sweep prompt did not reach the target: after it went in on 16.11 the operator still pointed at events missing from the ledger: Tu-95 flights to Vietnam and Japan airspace violation (17.11, raised by operator 19.11), China drone-part export licences in force 18.11 (raised 19.11), Moex -2.1% on 19.11, NSANet outage 17.11. That is >=2 misses in 3 days vs 2/week before. Cause: the sweep only finds what I think to search for. The sweep text stays in pulse_pass.sh as a second net; the measured change is now #25.",
+   "judged": "2026-11-20"
   },
   {
    "op": "add",
